@@ -1,14 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const utils = require('./tools/utils.js');
+const utils = require('./../tools/utils');
 const { postCssLoader, styleLoader, sassLoader, cssLoader } = utils.loadersConfig;
 
 module.exports = {
 	entry: './src/index.js',
 	output: {
 		filename: 'bundle.js',
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__dirname, '../dist'),
 	},
 	devServer: {
 		contentBase: '/src',

@@ -236,105 +236,107 @@ dist/index.html
 ### 5. 添加 babel 相关配置
 > 为了使用babel解析 jsx
 + 1. webpack配置文件中
-webpack.config.js
-```
-...
-entry: './src/index.js',
-output: {
-  filename: 'bundle.js',
-  path: path.resolve(__dirname, 'dist')
-},
-module: {
-  rules: [
-    {
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  useBuiltIns: 'usage',
-                  corejs: 3,
-                  targets: {
-                    chrome: '58',
-                    ie: '8',
-                  },
-                },
-              ],
-              '@babel/preset-react',
-            ],
-          },
-        },
-      ],
-    },
-  ],
-}
-...
-```
-+ 2. 添加babel配置文件
-> 在根目录下新建 .babelrc 文件
 
-.babelrc
-```
-{
-  "presets": [
-    [
-      "@babel/preset-env",
+  webpack.config.js
+  ```
+  ...
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
       {
-        "useBuiltIns": "usage",
-        "corejs": 3,
-        "targets": {
-          "chrome": "58",
-          "ie": "8"
-        }
-      }
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    useBuiltIns: 'usage',
+                    corejs: 3,
+                    targets: {
+                      chrome: '58',
+                      ie: '8',
+                    },
+                  },
+                ],
+                '@babel/preset-react',
+              ],
+            },
+          },
+        ],
+      },
     ],
-    "@babel/preset-react"
-  ],
-  "plugins": [
-    [
-      "@babel/plugin-transform-runtime",
-      {
-        "absoluteRuntime": false,
-        "corejs": false,
-        "helpers": true,
-        "regenerator": true,
-        "useESModules": false
-      }
+  }
+  ...
+  ```
++ 2. 添加babel配置文件
+
+  > 在根目录下新建 .babelrc 文件
+
+  .babelrc
+  ```
+  {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "useBuiltIns": "usage",
+          "corejs": 3,
+          "targets": {
+            "chrome": "58",
+            "ie": "8"
+          }
+        }
+      ],
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "absoluteRuntime": false,
+          "corejs": false,
+          "helpers": true,
+          "regenerator": true,
+          "useESModules": false
+        }
+      ]
     ]
-  ]
-}
-```
-当前文件目录结构：
-```
-webpack4-react
-|- /dist
-  |- index.html
-|- /src
-  |- index.js
-|- .babelrc
-|- package.json
-|- webpack.config.js
-```
+  }
+  ```
+  当前文件目录结构：
+  ```
+  webpack4-react
+  |- /dist
+    |- index.html
+  |- /src
+    |- index.js
+  |- .babelrc
+  |- package.json
+  |- webpack.config.js
+  ```
 ### 6. 打包
-执行 npm run build
-终端输出：
-```
-$ webpack
-Hash: f4d46dd4732764195f93
-Version: webpack 4.41.5
-Time: 446ms
-Built at: 2020-01-04 13:28:48
-    Asset     Size  Chunks             Chunk Names
-bundle.js  128 KiB       0  [emitted]  main
-Entrypoint main = bundle.js
-[3] ./src/index.js 211 bytes {0} [built]
-    + 7 hidden modules
-```
+    执行 npm run build
+    终端输出：
+    ```
+    $ webpack
+    Hash: f4d46dd4732764195f93
+    Version: webpack 4.41.5
+    Time: 446ms
+    Built at: 2020-01-04 13:28:48
+        Asset     Size  Chunks             Chunk Names
+    bundle.js  128 KiB       0  [emitted]  main
+    Entrypoint main = bundle.js
+    [3] ./src/index.js 211 bytes {0} [built]
+        + 7 hidden modules
+    ```
 
 在浏览器中打开 dist下的index.html，如果一切访问都正常，你应该能看到以下文本：'Hello React'。
 
@@ -345,6 +347,7 @@ Entrypoint main = bundle.js
     npm install --save-dev webpack-dev-server
     ```
 + 2. webpack 配置文件中配置 webpack-dev-server
+    
     webpack.config.js
     ```
     ...
@@ -365,6 +368,7 @@ Entrypoint main = bundle.js
     npm install --save-dev html-webpack-plugin
     ```
 + 2. webpack 配置文件中配置 webpack-dev-server
+    
     webpack.config.js
     ```
     ...
@@ -460,6 +464,7 @@ package.json
     ```
     > 这个过程中安装 node-sass 可能会很慢, 耐心等待
 + 2. 创建React组件
+    
     创建如下目录文件及内容：
     ```
     webpack4-react
@@ -526,6 +531,7 @@ package.json
     }
     ```
 + 3. 引入组件
+    
     src/index.js
     ```
     import React from 'react';
@@ -543,6 +549,7 @@ package.json
     );
     ```
 + 4. 新增 CSS 相关的 webpack 配置
+    
     根目录下新建 tools/utils.js
     ```
     // css 配置
@@ -613,6 +620,7 @@ package.json
     };
     ```
 + 5. 新增 postcss-loader 配置文件
+    
     根目录下新增 postcss.config.js
     ```
     const AUTOPREFIXER_BROWSERS = [
@@ -666,6 +674,7 @@ npm install --save @babel/runtime core-js
     ...
     ```
 + 3. React 组件中 引入图片
+    
     src/components/Date/index.jsx
     ```
     ...
@@ -741,3 +750,166 @@ ReactDom.render(
 ```
 
 此时 执行 `npm run dev` 查看
+
+
+## 七、 环境配置构建
+>开发环境(development)和生产环境(production)的构建目标差异很大。在开发环境中，我们需要具有强大的、具有实时重新加载(live reloading)或热模块替换(hot module replacement)能力的 source map 和 localhost server。而在生产环境中，我们的目标则转向于关注更小的 bundle，更轻量的 source map，以及更优化的资源，以改善加载时间。由于要遵循逻辑分离，我们通常建议为每个环境编写彼此独立的 webpack 配置。
+### 1. 使用 `webpack-merge` 配置
++ 1. 下载依赖
+    ```
+    npm install --save-dev webpack-merge clean-webpack-plugin uglifyjs-webpack-plugin
+    ```
++ 2. 拆分 webpack 配置
+    
+    根目录下创建 webpack 文件夹
+    ```
+    |- webpack
+      |- webpack.common.js
+      |- webpack.dev.js
+      |- webpack.production.js
+    ```
+    webpack.common.js
+    ```
+    const path = require('path');
+    const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+    const utils = require('./../tools/utils');
+    const { postCssLoader, styleLoader, sassLoader, cssLoader } = utils.loadersConfig;
+
+    module.exports = {
+      entry: './src/index.js',
+      output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, '../dist'),
+      },
+      devServer: {
+        contentBase: '/src',
+        hot: true,
+      },
+      resolve: {
+        // 设置模块导入规则，import/require时会直接在这些目录找文件
+        modules: ['node_modules'],
+        // import导入时省略后缀
+        extensions: ['.js', '.jsx', '.scss', '.less', '.css', '.json'],
+        // import导入时别名
+        alias: {
+        '@assets': path.resolve('./src/assets'),
+        '@common': path.resolve('./src/common'),
+        '@components': path.resolve('./src/components'),
+        '@images': path.resolve('./src/images'),
+        '@pages': path.resolve('./src/pages'),
+        '@style': path.resolve('./src/style'),
+        },
+      },
+      plugins: [
+        new HtmlWebpackPlugin({
+        template: './src/index.html',
+        filename: './index.html',
+        chunks: ['index'],
+        inject: 'body',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: [styleLoader, cssLoader, postCssLoader],
+          },
+          {
+            test: /\.scss$/,
+            include: [/pages/, /components/, /style/],
+            use: [styleLoader, cssLoader, postCssLoader, sassLoader],
+          },
+          {
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  name: '[path][name].[ext]',
+                  limit: 1024 * 15,
+                  fallback: 'file-loader',
+                },
+              },
+            ],
+          },
+          {
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  presets: [
+                    [
+                      '@babel/preset-env',
+                      {
+                          useBuiltIns: 'usage',
+                          corejs: 3,
+                            targets: {
+                            chrome: '58',
+                            ie: '8',
+                          },
+                      },
+                    ],
+                    '@babel/preset-react',
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
+    ```
+    webpack.dev.js
+    ```
+    const merge = require('webpack-merge');
+    const common = require('./webpack.common.js');
+    module.exports = merge(common, {
+      mode: 'development',
+      devtool: 'inline-source-map',
+      devServer: {
+        contentBase: '/src',
+        hot: true,
+      }
+    });
+    webpack.production.js
+    ```
+    ```
+      const merge = require('webpack-merge');
+      const UglifyJSPlugin = require('uglifyjs-webpack-plugin'); // 用来缩小（压缩优化）js文件
+      const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+      const common = require('./webpack.common.js');
+      module.exports = merge(common, {
+        mode: 'production',
+        devtool: 'source-map',
+        plugins: [
+          new UglifyJSPlugin({
+            sourceMap: true,
+          }),
+          new CleanWebpackPlugin(),
+        ],
+      });
+
+    ```
++ 3. npm 脚本命令更改
+    
+    package.json
+    ```
+    "dev": "webpack-dev-server --open --config webpack/webpack.dev.js",
+    "build": "webpack --config webpack/webpack.production.js"
+    ```
++ 4. 设置环境变量
+    
+    下载依赖
+    ```
+    npm install --save-dev cross-env
+    ```
+    npm 脚本命令更改
+    ```
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --config webpack/webpack.dev.js",
+    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js"
+    ```
+
