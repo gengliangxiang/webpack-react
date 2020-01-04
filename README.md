@@ -196,7 +196,147 @@ Entrypoint main = main.js
 [3] (webpack)/buildin/module.js 497 bytes {0} [built]
     + 1 hidden module
 ```
-同样的，dist文件夹下生成bundle.js文件
+同样的, dist 文件夹下生成bundle.js文件
 
 这样就实现了基本的webpack构建了
+
+## 三、添加 React 
+
+### 1. 下载 react 和 react-dom
+`npm install --save-dev react react-dom`
+
+### 2. 下载babel(编译js、jsx，es6等)
+`npm install --save-dev @babel/cli @babel/core @babel/preset-react @babel/preset-env @babel/plugin-transform-runtime babel-loader`
+
+### 3. 修改 入口文件
+src/index.js
+```
+import React from 'react';
+import ReactDom from 'react-dom';
+
+const hello = 'Hello React'
+ReactDom.render(
+	<div>
+		<div>{hello}</div>
+	</div>,
+	document.getElementById('app'),
+);
+```
+### 4. 添加 react 根元素
+dist/index.html
+```
+...
+<body>
+  <div id="app"></div>
+  <script src="bundle.js"></script>
+</body>
+...
+```
+### 5. 添加 babel 相关配置
+> 为了使用babel解析 jsx
++ webpack配置文件中
+webpack.config.js
+```
+...
+entry: './src/index.js',
+output: {
+  filename: 'bundle.js',
+  path: path.resolve(__dirname, 'dist')
+},
+module: {
+  rules: [
+    {
+      test: /\.(js|jsx)$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  useBuiltIns: 'usage',
+                  corejs: 3,
+                  targets: {
+                    chrome: '58',
+                    ie: '8',
+                  },
+                },
+              ],
+              '@babel/preset-react',
+            ],
+          },
+        },
+      ],
+    },
+  ],
+}
+...
+```
++ 添加babel配置文件
+> 在根目录下新建 .babelrc 文件
+
+.babelrc
+```
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": 3,
+        "targets": {
+          "chrome": "58",
+          "ie": "8"
+        }
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "absoluteRuntime": false,
+        "corejs": false,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ]
+  ]
+}
+```
+当前文件目录结构：
+```
+webpack4-react
+|- /dist
+  |- index.html
+|- /src
+  |- index.js
+|- .babelrc
+|- package.json
+|- webpack.config.js
+```
+### 6. 打包
+执行 npm run build
+终端输出：
+```
+$ webpack
+Hash: f4d46dd4732764195f93
+Version: webpack 4.41.5
+Time: 446ms
+Built at: 2020-01-04 13:28:48
+    Asset     Size  Chunks             Chunk Names
+bundle.js  128 KiB       0  [emitted]  main
+Entrypoint main = bundle.js
+[3] ./src/index.js 211 bytes {0} [built]
+    + 7 hidden modules
+```
+
+在浏览器中打开 dist下的index.html，如果一切访问都正常，你应该能看到以下文本：'Hello React'。
+
+
+
 
