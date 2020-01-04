@@ -635,3 +635,57 @@ package.json
 npm install --save @babel/runtime core-js
 ```
 执行 npm run dev ,自动打开浏览器，css 相关的配置构建完成
+
+### 3. 图片处理
++ 1.下载依赖
+    ```
+    npm install --save-dev file-loader url-loader
+    ```
++ 2. webpack配置中添加规则
+    ```
+    ...
+    module: {
+      rules: [
+          ...
+          {
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  name: '[path][name].[ext]',
+                  limit: 1024 * 15,
+                  fallback: 'file-loader',
+                },
+              },
+            ],
+          },
+          ...
+      ]
+    }
+    ...
+    ```
++ 3. React 组件中 引入图片
+    src/components/Date/index.jsx
+    ```
+    ...
+    import reactLogo from './../../images/React.svg';
+    import webpackLogo from './../../images/webpack.svg';
+    ...
+    render() {
+      const { date } = this.state;
+      return (
+        <div>
+          <div className={style.title}>时间</div>
+          <div>
+          <img className={style.logo} src={reactLogo} alt="" />
+          <img className={style.logo} src={webpackLogo} alt="" />
+          </div>
+          <div className={style.title}>
+          {date.toLocaleTimeString()}
+          </div>
+        </div>
+      );
+    }
+    ...
+    ```

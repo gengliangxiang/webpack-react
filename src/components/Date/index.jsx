@@ -1,5 +1,7 @@
 import React from 'react';
 import style from './style.scss';
+import reactLogo from './../../images/React.svg';
+import webpackLogo from './../../images/webpack.svg';
 
 
 class DateComponent extends React.Component {
@@ -29,6 +31,10 @@ class DateComponent extends React.Component {
     return (
       <div>
         <div className={style.title}>时间</div>
+        <div>
+          <img className={style.logo} src={reactLogo} alt="" />
+          <img className={style.logo} src={webpackLogo} alt="" />
+        </div>
         <div className={style.title}>
           {date.toLocaleTimeString()}
         </div>

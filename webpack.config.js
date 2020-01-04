@@ -44,6 +44,19 @@ module.exports = {
                 sassLoader,
             ],
         },
+        {
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        name: '[path][name].[ext]',
+                        limit: 1024 * 15,
+                        fallback: 'file-loader',
+                    },
+                },
+            ],
+        },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
