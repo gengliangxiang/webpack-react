@@ -200,7 +200,7 @@ Entrypoint main = main.js
 
 这样就实现了基本的webpack构建了
 
-## 三、添加 React 
+## 三、集成 React 
 
 ### 1. 下载 react 和 react-dom
 `npm install --save-dev react react-dom`
@@ -337,6 +337,92 @@ Entrypoint main = bundle.js
 
 在浏览器中打开 dist下的index.html，如果一切访问都正常，你应该能看到以下文本：'Hello React'。
 
+## 四、建立开发环境
+### 1. webpack-dev-server
++ 下载依赖
+    ```
+    npm install --save-dev webpack-dev-server
+    ```
++ webpack 配置文件中配置 webpack-dev-server
+    webpack.config.js
+    ```
+    ...
+    entry: './src/index.js',
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, 'dist')
+    },
+    devServer: {
+      contentBase: '/src',
+      hot: true,
+    },
+    ...
+    ```
+### 2. html-webpack-plugin
++ 下载依赖
+    ```
+    npm install --save-dev html-webpack-plugin
+    ```
++ webpack 配置文件中配置 webpack-dev-server
+    webpack.config.js
+    ```
+    ...
+    devServer: {
+      contentBase: '/src',
+      hot: true,
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+        filename: './index.html',
+        chunks: ['index'],
+        inject: 'body',
+      }),
+    ],
+    ...
+    ```
+
+### 3. 添加 NPM 脚本
+package.json
+```
+{
+  "name": "webpack4-react",
+  "version": "1.0.0",
+  "description": "webpack4-react",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --open --config webpack.config.js",
+    "build": "webpack --config webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  }
+}
+```
+### 4.执行脚本命令 npm run dev
+
+> 执行 npm run dev 后会自动打开浏览器，此时修改 index.js 文件中内容，浏览器会实时更新
+
+删除dist文件夹
+> 执行 npm run build 打包依旧会在dist下生成打包文件
 
 
 
