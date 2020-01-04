@@ -1,4 +1,5 @@
-# 前提条件
+# 从零开始的 webpack4
+## 前提条件
 安装 node.js
 当前 node.js 版本 ：v12.13.1
 当前 npm 版本 ： 6.12.1
@@ -424,5 +425,267 @@ package.json
 删除dist文件夹
 > 执行 npm run build 打包依旧会在dist下生成打包文件
 
+## 五、资源管理
+### 1. 加载 CSS
+> 为了从 JavaScript 模块中 import 一个 CSS 文件，你需要在 module 配置中 安装并添加 style-loader 和 css-loader：
++ 下载 style-loader css-loader
+    ```
+    npm install --save-dev style-loader css-loader
+    ```
++ webpack.config.js 中配置 css 的 loader
+    ```
+        module: {
+          rules: [
+            {
+              test: /\.css$/,
+              use: [
+              'style-loader',
+              'css-loader',
+              ]
+            },
+      ...
+      }
+    ```
++ src/index.js 中引入css
+    ```
+    import './style/reset.css';
+    ```
+    执行 npm run dev ,会看到 reset.css 中的样式已经生效
 
+### 2. CSS 预处理器 & 模块化 & 兼容性处理
++ 1. 下载依赖
+    ```
+    npm install --save-dev autoprefixer postcss-loader
+    npm install --save-dev less-loader node-sass sass sass-loader
+    ```
+    > 这个过程中安装 node-sass 可能会很慢, 耐心等待
++ 2. 创建React组件
+    创建如下目录文件及内容：
+    ```
+    webpack4-react
+    |- src
+      |- components
+        |- Date
+          |- index.jsx
+          |- style.scss
+      |- style
+        |- reset.scss
+      |- index.js
+    |- .babelrc
+    |- package.json
+    |- webpack.config.js
+    ```
+    src/components/Date/index.jsx
+    ```
+    import React from 'react';
+    import style from './style.scss';
 
+    class DateComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          date: new Date(),
+        };
+      }
+  
+      componentDidMount() {
+        this.timerID = setInterval(() => this.tick(), 1000);
+      }
+  
+      componentWillUnmount() {
+        clearInterval(this.timerID);
+      }
+  
+      tick() {
+        this.setState({
+          date: new Date(),
+        });
+      }
+  
+      render() {
+        const { date } = this.state;
+        return (
+         <div>
+            <div className={style.title}>时间</div>
+            <div className={style.title}>
+            {date.toLocaleTimeString()}
+            </div>
+          </div>
+        );
+      }
+    }
+    export default DateComponent;
+    ```
+    src/components/Date/style.scss
+    ```
+    .title {
+      height: 50px;
+      font: bold 20px '微软雅黑';
+      text-align: center;
+      color: #000;
+    }
+    ```
++ 3. 引入组件
+    src/index.js
+    ```
+    import React from 'react';
+    import ReactDom from 'react-dom';
+    import DateComponents from './components/Date/index.jsx';
+    import './style/reset.scss';
+
+    const hello = 'Hello React';
+    ReactDom.render(
+      <div>
+        <div>{hello}</div>
+        <DateComponents />
+      </div>,
+      document.getElementById('app')
+    );
+    ```
++ 4. 新增 CSS 相关的 webpack 配置
+    根目录下新建 tools/utils.js
+    ```
+    // css 配置
+    const styleLoader = {
+      loader: 'style-loader',
+    };
+    const cssLoader = {
+      loader: 'css-loader',
+      options: {
+        modules: true, // webpack3 为 module
+        sourceMap: true,
+        importLoaders: 2,
+      },
+    };
+    const postCssLoader = {
+      loader: 'postcss-loader',
+    };
+    const sassLoader = {
+      loader: 'sass-loader',
+      options: {
+        sourceMap: true,
+      },
+    };
+    const lessLoader = {
+      loader: 'less-loader',
+    };
+    exports.loadersConfig = {
+      styleLoader,
+      cssLoader,
+      postCssLoader,
+      sassLoader,
+      lessLoader,
+    };
+    // css 配置
+    ```
+    webpack.config.js
+    ```
+    ...
+    const utils = require('./tools/utils.js');
+    const {
+      postCssLoader,
+      styleLoader,
+      sassLoader,
+      cssLoader,
+    } = utils.loadersConfig;
+    ...
+    module.exports = {
+      ...
+      module: {
+        rules: [
+          {
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: [styleLoader, cssLoader, postCssLoader],
+          },
+          {
+            test: /\.scss$/,
+            include: [/pages/, /components/, /style/],
+            use: [
+              styleLoader,
+              cssLoader,
+              postCssLoader,
+              sassLoader,
+            ],
+          },
+        }
+      ...
+    };
+    ```
++ 5. 新增 postcss-loader 配置文件
+    根目录下新增 postcss.config.js
+    ```
+    const AUTOPREFIXER_BROWSERS = [
+      'Android 2.3',
+      'Android >= 4',
+      'Chrome >= 35',
+      'Firefox >= 31',
+      'Explorer >= 8',
+      'iOS >= 7',
+      'Opera >= 12',
+      'Safari >= 7.1',
+    ];
+    module.exports = {
+      plugins: [require('autoprefixer')({overrideBrowserslist: ['> 0.15% in CN']})],
+    };
+    ```
+
+> 这时候执行 npm run dev 命令会报错，因为缺少一些babel依赖，下载一下就好了
+```
+npm install --save @babel/runtime core-js
+```
+执行 npm run dev ,自动打开浏览器，css 相关的配置构建完成
+
+### 3. 图片处理
++ 1.下载依赖
+    ```
+    npm install --save-dev file-loader url-loader
+    ```
++ 2. webpack配置中添加规则
+    ```
+    ...
+    module: {
+      rules: [
+          ...
+          {
+            test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  name: '[path][name].[ext]',
+                  limit: 1024 * 15,
+                  fallback: 'file-loader',
+                },
+              },
+            ],
+          },
+          ...
+      ]
+    }
+    ...
+    ```
++ 3. React 组件中 引入图片
+    src/components/Date/index.jsx
+    ```
+    ...
+    import reactLogo from './../../images/React.svg';
+    import webpackLogo from './../../images/webpack.svg';
+    ...
+    render() {
+      const { date } = this.state;
+      return (
+        <div>
+          <div className={style.title}>时间</div>
+          <div>
+          <img className={style.logo} src={reactLogo} alt="" />
+          <img className={style.logo} src={webpackLogo} alt="" />
+          </div>
+          <div className={style.title}>
+          {date.toLocaleTimeString()}
+          </div>
+        </div>
+      );
+    }
+    ...
+    ```
