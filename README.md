@@ -2,7 +2,7 @@
 安装 node.js
 当前 node.js 版本 ：v12.13.1
 当前 npm 版本 ： 6.12.1
-# 一、 简易打包
+## 一、 简易打包
 
 ### 1.初始化项目 & 创建项目
 ```
@@ -121,4 +121,74 @@ Entrypoint main = main.js
 
 简易打包已经完成
 
+## 二、使用配置文件打包
+
+### 1. 添加 webpack.config.js 配置文件
+```
+webpack4-react
+|- package.json
+|- webpack.config.js
+|- /dist
+  |- index.html
+|- /src
+  |- index.js
+```
+webpack.config.js
+```
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  }
+};
+```
+
+### 2. 添加NPM 脚本
+package.json
+```
+{
+  "name": "webpack4-react",
+  "version": "1.0.0",
+  "description": "webpack4-react",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
+```
+### 3.执行脚本命令打包
+```
+npm run build
+```
+终端将输出：
+```
+Hash: 9cbb2fac6cc224bfe661
+Version: webpack 4.41.5
+Time: 1272ms
+Built at: 2020-01-04 11:39:26
+  Asset      Size  Chunks             Chunk Names
+main.js  72.1 KiB       0  [emitted]  main
+Entrypoint main = main.js
+[1] ./src/index.js 213 bytes {0} [built]
+[2] (webpack)/buildin/global.js 472 bytes {0} [built]
+[3] (webpack)/buildin/module.js 497 bytes {0} [built]
+    + 1 hidden module
+```
+同样的，dist文件夹下生成main.js文件
+
+这样就实现了基本的webpack构建了
 
