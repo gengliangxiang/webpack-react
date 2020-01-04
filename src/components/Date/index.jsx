@@ -1,7 +1,8 @@
 import React from 'react';
+import reactLogo from '@images/React.svg';
+import webpackLogo from '@images/webpack.svg';
+
 import style from './style.scss';
-import reactLogo from './../../images/React.svg';
-import webpackLogo from './../../images/webpack.svg';
 
 
 class DateComponent extends React.Component {

@@ -235,7 +235,7 @@ dist/index.html
 ```
 ### 5. 添加 babel 相关配置
 > 为了使用babel解析 jsx
-+ webpack配置文件中
++ 1. webpack配置文件中
 webpack.config.js
 ```
 ...
@@ -275,7 +275,7 @@ module: {
 }
 ...
 ```
-+ 添加babel配置文件
++ 2. 添加babel配置文件
 > 在根目录下新建 .babelrc 文件
 
 .babelrc
@@ -340,11 +340,11 @@ Entrypoint main = bundle.js
 
 ## 四、建立开发环境
 ### 1. webpack-dev-server
-+ 下载依赖
++ 1. 下载依赖
     ```
     npm install --save-dev webpack-dev-server
     ```
-+ webpack 配置文件中配置 webpack-dev-server
++ 2. webpack 配置文件中配置 webpack-dev-server
     webpack.config.js
     ```
     ...
@@ -360,11 +360,11 @@ Entrypoint main = bundle.js
     ...
     ```
 ### 2. html-webpack-plugin
-+ 下载依赖
++ 1. 下载依赖
     ```
     npm install --save-dev html-webpack-plugin
     ```
-+ webpack 配置文件中配置 webpack-dev-server
++ 2. webpack 配置文件中配置 webpack-dev-server
     webpack.config.js
     ```
     ...
@@ -418,9 +418,9 @@ package.json
   }
 }
 ```
-### 4.执行脚本命令 npm run dev
+### 4.执行脚本命令 `npm run dev`
 
-> 执行 npm run dev 后会自动打开浏览器，此时修改 index.js 文件中内容，浏览器会实时更新
+> 执行 `npm run dev` 后会自动打开浏览器，此时修改 index.js 文件中内容，浏览器会实时更新
 
 删除dist文件夹
 > 执行 npm run build 打包依旧会在dist下生成打包文件
@@ -428,11 +428,11 @@ package.json
 ## 五、资源管理
 ### 1. 加载 CSS
 > 为了从 JavaScript 模块中 import 一个 CSS 文件，你需要在 module 配置中 安装并添加 style-loader 和 css-loader：
-+ 下载 style-loader css-loader
++ 1. 下载 style-loader css-loader
     ```
     npm install --save-dev style-loader css-loader
     ```
-+ webpack.config.js 中配置 css 的 loader
++ 2. webpack.config.js 中配置 css 的 loader
     ```
         module: {
           rules: [
@@ -446,11 +446,11 @@ package.json
       ...
       }
     ```
-+ src/index.js 中引入css
++ 3. src/index.js 中引入css
     ```
     import './style/reset.css';
     ```
-    执行 npm run dev ,会看到 reset.css 中的样式已经生效
+    执行 `npm run dev` ,会看到 reset.css 中的样式已经生效
 
 ### 2. CSS 预处理器 & 模块化 & 兼容性处理
 + 1. 下载依赖
@@ -630,14 +630,14 @@ package.json
     };
     ```
 
-> 这时候执行 npm run dev 命令会报错，因为缺少一些babel依赖，下载一下就好了
+> 这时候执行 `npm run dev` 命令会报错，因为缺少一些babel依赖，下载一下就好了
 ```
 npm install --save @babel/runtime core-js
 ```
-执行 npm run dev ,自动打开浏览器，css 相关的配置构建完成
+执行 `npm run dev` ,自动打开浏览器，css 相关的配置构建完成
 
 ### 3. 图片处理
-+ 1.下载依赖
++ 1. 下载依赖
     ```
     npm install --save-dev file-loader url-loader
     ```
@@ -689,3 +689,55 @@ npm install --save @babel/runtime core-js
     }
     ...
     ```
+### 4. 其他
+> 字体、数据等参考 webpack 官网 [资源管理](https://www.webpackjs.com/guides/asset-management/)
+
+## 六、 resolve 配置
+> 在代码引入组件或图片时，我们来配置一些便捷的方式
+
+### 1. 配置
+webpack.config.js
+```
+// 引入 node 的 path 模块
+const path = require('path');
+...
+module.exports = {
+  ...
+  resolve: {
+    // 设置模块导入规则，import/require时会直接在这些目录找文件
+    modules: ['node_modules'],
+    // import导入时省略后缀
+    extensions: ['.js', '.jsx', '.scss', '.less', '.css', '.json'],
+    // import导入时别名
+    alias: {
+      '@components': path.resolve('./src/components'),
+      '@images': path.resolve('./src/images'),
+      '@style': path.resolve('./src/style'),
+    },
+  },
+  ...
+}
+
+```
+### 2. 使用
+> 举个🌰
+
+src/index.js 中
+```
+import React from 'react';
+import ReactDom from 'react-dom';
+import DateComponents from '@components/Date/index.jsx';
+import '@style/reset.scss';
+
+const hello = 'Hello React';
+ReactDom.render(
+  <div>
+    <div>{hello}</div>
+    <DateComponents />
+  </div>,
+  document.getElementById('app')
+);
+
+```
+
+此时 执行 `npm run dev` 查看
