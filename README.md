@@ -912,4 +912,185 @@ ReactDom.render(
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --config webpack/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.production.js"
     ```
+## 八、 其他优化
+### 1. 配置中获取环境变量
+> 在 npm 脚本执行的时候设置的环境变量通过 process.env.NODE_ENV 来获取，process.env.NODE_ENV 的值 在当前脚本下有两种： development , production , 借此可以根据不同环境设置不同的配置。
+### 2. 添加 html-loader 及 html 优化
++ 1. 下载依赖
+    ```
+    npm install --save-dev html-loader
+    ```
++ 2. 配置
+
+    webpack.config.common.js
+    ```
+    ...
+    entry: {
+      //配置页面入口
+      index: ['./src/index.js'],
+    },
+    output: {
+      //配置输出选项
+      path: path.resolve(__dirname, '../dist'), //输出路径为，当前路径下
+      filename: '[name].[hash:5].js', //输出后的文件名称
+    },
+    ...
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: 'webpack & react',
+        template: './src/index.html', //本地模板文件的位置，支持加载器(如handlebars、ejs、undersore、html等)，如比如 handlebars!src/index.hbs；
+        filename: './index.html', //输出文件的文件名称，默认为index.html，不配置就是该文件名；此外，还可以为输出文件指定目录位置（例如'html/index.html'）
+        chunks: ['index'], // chunks主要用于多入口文件，当你有多个入口文件，那就回编译后生成多个打包后的文件，那么chunks 就能选择你要使用那些js文件
+        inject: 'body', //1、true或者body：所有JavaScript资源插入到body元素的底部2、head: 所有JavaScript资源插入到head元素中3、false： 所有静态资源css和JavaScript都不会注入到模板文件中
+        showErrors: true, //是否将错误信息输出到html页面中
+        hash: false, //是否为所有注入的静态资源添加webpack每次编译产生的唯一hash值
+        favicon: 'react.ico', //添加特定的 favicon 路径到输出的 HTML 文件中。
+        minify: {
+          //是否对大小写敏感，默认false
+          caseSensitive: true,
+          //是否简写boolean格式的属性如：disabled="disabled" 简写为disabled  默认false
+          collapseBooleanAttributes: true,
+          //是否去除空格，默认false
+          collapseWhitespace: true,
+          //是否压缩html里的css（使用clean-css进行的压缩） 默认值false；
+          minifyCSS: true,
+          //是否压缩html里的js（使用uglify-js进行的压缩）
+          minifyJS: true,
+          //Prevents the escaping of the values of attributes
+          preventAttributesEscaping: true,
+          //是否移除属性的引号 默认false
+          removeAttributeQuotes: true,
+          //是否移除注释 默认false
+          removeComments: true,
+          //从脚本和样式删除的注释 默认false
+          removeCommentsFromCDATA: true,
+          //是否删除空属性，默认false
+          removeEmptyAttributes: true,
+          //  若开启此项，生成的html中没有 body 和 head，html也未闭合
+          removeOptionalTags: false,
+          //删除多余的属性
+          removeRedundantAttributes: true,
+          //删除script的类型属性，在h5下面script的type默认值：text/javascript 默认值false
+          removeScriptTypeAttributes: true,
+          //删除style的类型属性， type="text/css" 同上
+          removeStyleLinkTypeAttributes: true,
+          //使用短的文档类型，默认false
+          useShortDoctype: true,
+        },
+    }),
+    ]
+    ...
+    module: {
+      rules: [
+        test: /\.html$/,
+        use: 'html-loader',
+      ]
+    }
+    npm install --save-dev html-loader
+    ```
+
+### 3. 压缩 提取 CSS
++ 1. 下载依赖
+    ```
+    npm install --save-dev mini-css-extract-plugin
+    ```
++ 2. 在生产环境中压缩CSS, 开发环境中不压缩
+
+    webpack.config.common.js
+    ```
+    ...
+    const devMode = process.env.NODE_ENV !== 'production';
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+    ...
+    module.exports = {
+      ...
+      plugins: [
+        ...
+        new MiniCssExtractPlugin({
+          filename: devMode ? '[name].css' : '[name]_[hash:5].css',
+          chunkFilename: devMode ? '[id].css' : '[id]_[hash:5].css',
+          disable: false, //是否禁用此插件
+          allChunks: true,
+		}),
+        ...
+      ]
+      ...
+      module: {
+        ...
+        {
+          test: /\.scss$/,
+          include: [/pages/, /components/, /style/],
+          use: [
+            devMode ? styleLoader : MiniCssExtractPlugin.loader,
+            cssLoader,
+            postCssLoader,
+            sassLoader,
+          ],
+        },
+        ...
+      }
+    }
+    ```
+### 4. 生产环境压缩 JS, 打包时清除dist文件夹
++ 1. 下载依赖
+    ```
+    npm install --save-dev uglifyjs-webpack-plugin clean-webpack-plugin
+    ```
++ 2. webpack 配置
+
+    webpack.production.js
+    ```
+    ...
+    const merge = require('webpack-merge');
+    const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+    const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+    const common = require('./webpack.config.common.js');
+    module.exports = merge(common, {
+      mode: 'production',
+      devtool: 'source-map',
+      plugins: [
+        new UglifyJSPlugin({
+          sourceMap: true,
+        }),
+        new CleanWebpackPlugin(),
+      ],
+    });
+    ...
+    ```
+### 5. happypack 加快打包速度
++ 1. 下载依赖
+    ```
+    npm install --save-dev happypack
+    ```
++ 2. 配置
+
+    webpack.config.common.js
+    ```
+    ...
+    const os = require('os');
+    const HappyPack = require('happypack');
+    const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+    ...
+    plugins: [
+      ...
+    new HappyPack({
+      id: 'babel', //用id来标识 happypack处理那里类文件
+      threadPool: happyThreadPool, //共享进程池
+      loaders: [
+        {
+          loader: 'babel-loader',
+        },
+      ],
+    }),
+      ...
+    ]
+    ```
+
+
+
+
+
+
+
+
 
