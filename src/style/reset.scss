@@ -1,0 +1,70 @@
+/* 初始化样式 */
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+li,
+ol,
+span,
+button,
+input,
+textarea,
+table,
+th,
+td,
+tr,
+tbody,
+thead,
+tfoot {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+i,
+em,
+b {
+	font-style: normal;
+}
+html,
+body {
+	width: 100%;
+	height: 100%;
+	font-size: 14px;
+	color: #000;
+}
+ul,
+ol,
+li {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+img {
+	border: 0;
+	vertical-align: middle;
+}
+.clearFloat::before,
+.clearFloat::after {
+	display: block;
+	height: 0;
+	visibility: hidden;
+	content: '';
+}
+.clearFloat::after {
+	clear: both;
+}
+.clearFloat {
+	zoom: 1;
+}
+/* 初始化样式结束 */
