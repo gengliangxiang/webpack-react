@@ -1156,7 +1156,7 @@ setting.json
 ### 2. eslint
 + 1. 下载依赖
     ```
-    npm insatll --save-dev babel-eslint eslint eslint-config-airbnb eslint-config-react-app eslint-friendly-formatter eslint-loader eslint-plugin-flowtype eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react autoprefixer pre-commit
+    npm insatll --save-dev babel-eslint eslint eslint-config-airbnb eslint-config-react-app eslint-friendly-formatter eslint-loader eslint-plugin-flowtype eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react autoprefixer
     ```
 + 2. webpack 的 eslint 配置
 
@@ -1400,16 +1400,6 @@ setting.json
     ],
   });
 	```
-
-    package.json
-    ```
-    ...
-    "pre-commit": [
-      "dev",
-      "build"
-    ],
-    ...
-    ```
 
     根目录下新建 .stylelintrc.js 文件
     ```
