@@ -13,7 +13,7 @@ const { postCssLoader, styleLoader, sassLoader, cssLoader } = utils.loadersConfi
 module.exports = {
 	entry: {
 		//配置页面入口
-		index: ['./src/index.js'],
+		index: ['@babel/polyfill', './src/index.js'],
 	},
 	output: {
 		//配置输出选项

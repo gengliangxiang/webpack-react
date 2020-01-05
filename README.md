@@ -1085,7 +1085,20 @@ ReactDom.render(
       ...
     ]
     ```
+### 5. polyfill 编译es6的新语法
++ 1. 下载依赖
+    ```
+    npm install --save-dev @babel/polyfill @babel/plugin-transform-arrow-functions @babel/preset-es2017
+    ```
++ 2. 配置
 
+    webpack.common.js
+    ```
+    entry: {
+      //配置页面入口
+      index: ['@babel/polyfill', './src/index.js'],
+    },
+    ```
 
 
 
