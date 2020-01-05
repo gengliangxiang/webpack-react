@@ -1,0 +1,32 @@
+{
+	"fileheader.Author": "gengliangxiang",
+	"fileheader.LastModifiedBy": "gengliangxiang",
+	"editor.tabSize": 4,
+	"prettier.singleQuote": true,
+	"editor.detectIndentation": false,
+	"editor.renderControlCharacters": true,
+	"editor.renderWhitespace": "all",
+	"emmet.includeLanguages": {
+		"javascript": "javascriptreact"
+	},
+	"prettier.trailingComma": "es5",
+	"emmet.triggerExpansionOnTab": true,
+	"javascript.implicitProjectConfig.experimentalDecorators": true,
+	"workbench.colorTheme": "Solarized Light",
+	"window.zoomLevel": 0,
+	"prettier.useTabs": true,
+	"editor.foldingStrategy": "indentation",
+	"explorer.confirmDelete": false,
+	"javascript.updateImportsOnFileMove.enabled": "never",
+	"eslint.validate": [
+		{
+			"language": "javascript",
+			"autoFix": true
+		},
+		{
+			"language": "javascriptreact",
+			"autoFix": true
+		}
+	],
+	"eslint.autoFixOnSave": true
+}

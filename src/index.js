@@ -60,5 +60,5 @@ ReactDom.render(
 		<div>{hello}</div>
 		<DateComponents />
 	</div>,
-	document.getElementById('app')
+	document.getElementById('app'),
 );

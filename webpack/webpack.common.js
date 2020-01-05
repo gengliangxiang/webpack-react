@@ -73,8 +73,8 @@ module.exports = {
 			chunkFilename: devMode ? '[id].css' : '[id]_[hash:5].css',
 			disable: false, //是否禁用此插件
 			allChunks: true,
-        }),
-        new HappyPack({
+		}),
+		new HappyPack({
 			id: 'babel', //用id来标识 happypack处理那里类文件
 			threadPool: happyThreadPool, //共享进程池
 			loaders: [
@@ -162,28 +162,18 @@ module.exports = {
 			},
 			{
 				test: /\.(js|jsx)$/,
-				exclude: /node_modules/,
-				use: [
-					{
-						loader: 'babel-loader',
-						options: {
-							presets: [
-								[
-									'@babel/preset-env',
-									{
-										useBuiltIns: 'usage',
-										corejs: 3,
-										targets: {
-											chrome: '58',
-											ie: '8',
-										},
-									},
-								],
-								'@babel/preset-react',
-							],
-						},
-					},
-				],
+				use: ['happypack/loader?id=babel'],
+				exclude: /node_modules/, //设置node_modules里的js文件不用解析
+			},
+			{
+				test: /\.(js|jsx)$/,
+				loader: 'eslint-loader',
+				enforce: 'pre',
+				include: [path.resolve(__dirname, 'src')], // 指定检查的目录
+				options: {
+					// 这里的配置项参数将会被传递到 eslint 的 CLIEngine
+					formatter: require('eslint-friendly-formatter'), // 指定错误报告的格式规范
+				},
 			},
 		],
 	},

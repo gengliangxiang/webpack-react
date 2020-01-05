@@ -1073,17 +1073,28 @@ ReactDom.render(
     ...
     plugins: [
       ...
-    new HappyPack({
-      id: 'babel', //用id来标识 happypack处理那里类文件
-      threadPool: happyThreadPool, //共享进程池
-      loaders: [
-        {
-          loader: 'babel-loader',
-        },
-      ],
-    }),
+      new HappyPack({
+        id: 'babel', //用id来标识 happypack处理那里类文件
+        threadPool: happyThreadPool, //共享进程池
+        loaders: [
+          {
+            loader: 'babel-loader',
+          },
+        ],
+      }),
       ...
-    ]
+    ],
+    ...
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          use: ['happypack/loader?id=babel'],
+          exclude: /node_modules/, //设置node_modules里的js文件不用解析
+        },
+      ]
+    }
+    ...
     ```
 ### 5. polyfill 编译es6的新语法
 + 1. 下载依赖
@@ -1100,10 +1111,621 @@ ReactDom.render(
     },
     ```
 
+## 九、 代码规范- eslint & stylelint
+### 1. 添加编辑器配置文件以及插件
+vs code 格式化插件 使用的是 `Prettier - Code formatter` 以及 `ESLint`
+```
+|- .vscode
+	|- setting.json
+```
+setting.json
+```
+{
+  "editor.tabSize": 4,
+  "prettier.singleQuote": true,
+  "editor.detectIndentation": false,
+  "editor.renderControlCharacters": true,
+  "editor.renderWhitespace": "all",
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "prettier.trailingComma": "es5",
+  "emmet.triggerExpansionOnTab": true,
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "workbench.colorTheme": "Solarized Light",
+  "window.zoomLevel": 0,
+  "prettier.useTabs": true,
+  "editor.foldingStrategy": "indentation",
+  "explorer.confirmDelete": false,
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "eslint.validate": [
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    }
+  ],
+  "eslint.autoFixOnSave": true
+}
+```
 
 
+### 2. eslint
++ 1. 下载依赖
+    ```
+    npm insatll --save-dev babel-eslint eslint eslint-config-airbnb eslint-config-react-app eslint-friendly-formatter eslint-loader eslint-plugin-flowtype eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react autoprefixer pre-commit
+    ```
++ 2. webpack 的 eslint 配置
 
+    根目录下新建 .eslintrc.js 文件
+    ```
+    module.exports = {
+      root: true,
+      env: {
+        browser: true,
+        commonjs: true,
+        es6: true,
+      },
+      extends: [
+        'airbnb',
+      ],
+      globals: {
+        $: true,
+        process: true,
+        __dirname: true,
+      },
+      parser: 'babel-eslint',
+      parserOptions: {
+        //es6的module模式
+        sourceType: 'module',
+        ecmaFeatures: {
+          experimentalObjectRestSpread: true,
+          jsx: true,
+        },
+        ecmaVersion: 9,
+      },
+      settings: {
+        'import/ignore': ['node_modules', '.s?css', '@w*'],
+      },
+      // "excludedFiles": "*.test.js",
+      plugins: ['react', 'import', 'jsx-a11y'],
+      rules: {
+        'import/no-unresolved': 0,
+        'import/extensions': 0,
+        'import/prefer-default-export': 0,
 
+        'react/prop-types': 0,
+        'react/jsx-filename-extension': 0,
+        'react/prefer-stateless-function': 0,
+        'react/jsx-indent': [2, 'tab'],
+        'react/jsx-indent-props': [2, 'tab'],
+        'react/require-default-props': 0,
+        // // @off 同构应用需要在 didMount 里写 setState
+        'react/no-did-mount-set-state': 0,
+
+        'jsx-a11y/anchor-is-valid': 0,
+        'jsx-a11y/click-events-have-key-events': 0,
+        'jsx-a11y/mouse-events-have-key-events': 0,
+        'jsx-a11y/no-noninteractive-element-interactions': 0,
+        'jsx-a11y/no-static-element-interactions': 0,
+
+        'no-return-assign': 0,
+        'no-console': 0,
+        // 0、1、2分别表示不开启检查、警告、错误
+        indent: [2, 'tab', { SwitchCase: 1 }], // tab缩进
+        // 圈复杂度
+        complexity: [2, 9],
+        'max-params': [2, 7],
+        'max-depth': [2, 4],
+        'max-len': [
+          'error',
+          {
+            code: 150,
+            tabWidth: 4,
+            ignoreComments: true,
+            ignoreUrls: true,
+            ignoreStrings: true,
+            ignoreTemplateLiterals: true,
+            ignoreRegExpLiterals: true,
+          },
+        ],
+        'no-tabs': 0,
+        'object-curly-newline': [
+          0,
+          {
+            ObjectExpression: 'always',
+            ObjectPattern: { multiline: true },
+            ImportDeclaration: 'never',
+            ExportDeclaration: {
+              multiline: true,
+            },
+          },
+        ],
+        'object-curly-spacing': 0,
+
+        'arrow-parens': [2, 'as-needed'],
+        // 最大回调层数
+        'max-nested-callbacks': [2, 3],
+        'no-unused-vars': [
+          2,
+          {
+            argsIgnorePattern: '^React',
+            varsIgnorePattern: '[Rr]eact|[Ss]tyle',
+          },
+        ],
+        'no-extra-boolean-cast': 0,
+        'array-callback-return': 0,
+        'no-param-reassign': 0,
+        'jsx-quotes': [0, 'prefer-double'], //强制在JSX属性（jsx-quotes）中一致使用双引号
+        'no-underscore-dangle': 0,
+        'quote-props': 0,
+        // "no-native-reassign": 2,//不能重写native对象
+        // // if while function 后面的{必须与if在同一行，java风格。
+        // "brace-style": [2, "1tbs", { "allowSingleLine": true }],
+        // // 双峰驼命名格式
+        // "camelcase": 2,
+        // // 以方括号取对象属性时，[ 后面和 ] 前面是否需要空格, 可选参数 never, always
+        // "computed-property-spacing": [2,"never"],
+        // //允许箭头函数可以省略小括号
+        // 'arrow-parens': 0,
+        // 'no-extra-semi': 2, // 不允许多余的分号
+        // //允许使用async-await函数
+        // 'generator-star-spacing': 0,
+        // //在开发环境开启debugger功能,生产环境禁止使用debugger
+        // 'no-debugger': process.env.NODE_ENV === 'development' ? 0 : 2,
+        // "quotes": [2, "single"], //单引号
+        // "no-var": 2, //对var警告
+        // "semi": ["error", "always"], //不强制使用分号
+        // "no-irregular-whitespace": 0, //不规则的空白不允许
+        // "no-alert": 2, //禁止使用alert confirm prompt
+        // "no-lone-blocks": 0, //禁止不必要的嵌套块
+        // "no-class-assign": 2, //禁止给类赋值
+        // "no-cond-assign": 2, //禁止在条件表达式中使用赋值语句
+        // "no-const-assign": 2, //禁止修改const声明的变量
+        // "no-delete-var": 2, //不能对var声明的变量使用delete操作符
+        // "no-dupe-keys": 2, //在创建对象字面量时不允许键重复
+        // "no-duplicate-case": 2, //switch中的case标签不能重复
+        // "no-dupe-args": 2, //函数参数不能重复
+        // "no-empty": 2, //块语句中的内容不能为空
+        // "no-func-assign": 2, //禁止重复的函数声明
+        // "no-invalid-this": 0, //禁止无效的this，只能用在构造器，类，对象字面量
+        // "no-redeclare": 2, //禁止重复声明变量
+        // "no-spaced-func": 2, //函数调用时 函数名与()之间不能有空格
+        // "no-this-before-super": 0, //在调用super()之前不能使用this或super
+        // "no-undef": 2, //不能有未定义的变量
+        // "no-use-before-define": 2, //未定义前不能使用
+        // // "camelcase": 0, //强制驼峰法命名
+        // "no-mixed-spaces-and-tabs": 0, //禁止混用tab和空格
+        // "prefer-arrow-callback": 0, //比较喜欢箭头回调
+        // "arrow-spacing": 0, //=>的前/后括号
+        //
+        // // 禁止在 componentDidMount 里面使用 setState
+
+        // // 禁止在 componentDidUpdate 里面使用 setState
+        // 'react/no-did-update-set-state': 2,
+        // // 禁止拼写错误
+
+        // 'react/no-typos': 2,
+        // // 禁止使用字符串 ref
+        // 'react/no-string-refs': 2,
+        // // @fixable 禁止出现 HTML 中的属性，如 class
+        // 'react/no-unknown-property': 2,
+        // // 禁止出现未使用的 propTypes
+        // // @off 不强制要求写 propTypes
+        // 'react/no-unused-prop-types': 2,
+        // // 出现 jsx 的地方必须 import React
+        // // @off 已经在 no-undef 中限制了
+        // 'react/react-in-jsx-scope': 0,
+        // // 非 required 的 prop 必须有 defaultProps
+        // // @off 不强制要求写 propTypes
+        // 'react/require-default-props': 0,
+        // // render 方法中必须有返回值
+        // 'react/require-render-return': 2,
+        // // @fixable 组件内没有 children 时，必须使用自闭和写法
+        // // @off 没必要限制
+        // 'react/self-closing-comp': 0,
+        // // style 属性的取值必须是 object
+        // 'react/style-prop-object': 2,
+        // // HTML 中的自闭和标签禁止有 children
+        // 'react/void-dom-elements-no-children': 2,
+        // // 数组中的 jsx 必须有 key
+        // 'react/jsx-key': 2,
+        // // 禁止在 jsx 中使用像注释的字符串
+        // 'react/jsx-no-comment-textnodes': 2,
+        // // 禁止出现重复的 props
+        // 'react/jsx-no-duplicate-props': 2,
+        // // 禁止使用未定义的 jsx elemet
+        // 'react/jsx-no-undef': 2,
+        // // jsx 文件必须 import React
+        // 'react/jsx-uses-react': 2,
+        // // 定义了的 jsx element 必须使用
+        // 'react/jsx-uses-vars': 2,
+        // // @fixable 多行的 jsx 必须有括号包起来
+        // // @off 没必要限制
+        // 'react/jsx-wrap-multilines': 2,
+        // "react/no-array-index-key": 2, // 遍历出来的节点必须加key
+        // "react/no-children-prop": 2, // 禁止使用children作为prop
+        // "react/no-direct-mutation-state": 2, // 禁止直接this.state = 方式修改state 必须使用setState
+      },
+    };
+    ```
+    webpack.common.js
+    ```
+    ...
+    module: {
+      rules: [
+        ...
+        {
+          test: /\.(js|jsx)$/,
+          loader: 'eslint-loader',
+          enforce: 'pre',
+          include: [path.resolve(__dirname, 'src')], // 指定检查的目录
+          options: {
+            // 这里的配置项参数将会被传递到 eslint 的 CLIEngine
+            formatter: require('eslint-friendly-formatter'), // 指定错误报告的格式规范
+          },
+        },
+      ]
+    }
+    ...
+    ```
+    根目录下新建 .eslintignore 文件 用来制定忽略某些文件的 eslint 校验
+    ```
+    webpack
+    ```
+### 3. stylelint
++ 1. 下载依赖
+    ```
+    npm insatll --save-dev stylelint stylelint-config-recommended stylelint-config-standard stylelint-order stylelint-webpack-plugin
+    ```
++ 2. stylelint 配置
+
+	webpack.dev.js
+	```
+	const merge = require('webpack-merge');
+  const UglifyJSPlugin = require('uglifyjs-webpack-plugin'); // 用来缩小（压缩优化）js文件
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+  const common = require('./webpack.common.js');
+  module.exports = merge(common, {
+    mode: 'production',
+    devtool: 'source-map',
+    plugins: [
+      new UglifyJSPlugin({
+        sourceMap: true,
+      }),
+      new CleanWebpackPlugin(),
+    ],
+  });
+	```
+
+    package.json
+    ```
+    ...
+    "pre-commit": [
+      "dev",
+      "build"
+    ],
+    ...
+    ```
+
+    根目录下新建 .stylelintrc.js 文件
+    ```
+    module.exports = {
+      extends: ['stylelint-config-standard', 'stylelint-config-recommended'],
+      plugins: ['stylelint-order'],
+      rules: {
+        'order/order': [
+          // "at-rules",
+          // "declarations",
+          'custom-properties',
+          'dollar-variables',
+          'rules',
+        ],
+        'order/properties-order': [
+          'position',
+          'z-index',
+          'top',
+          'bottom',
+          'left',
+          'right',
+          'float',
+          'clear',
+          'columns',
+          'columns-width',
+          'columns-count',
+          'column-rule',
+          'column-rule-width',
+          'column-rule-style',
+          'column-rule-color',
+          'column-fill',
+          'column-span',
+          'column-gap',
+          'display',
+          'grid',
+          'grid-template-rows',
+          'grid-template-columns',
+          'grid-template-areas',
+          'grid-auto-rows',
+          'grid-auto-columns',
+          'grid-auto-flow',
+          'grid-column-gap',
+          'grid-row-gap',
+          'grid-template',
+          'grid-template-rows',
+          'grid-template-columns',
+          'grid-template-areas',
+          'grid-gap',
+          'grid-row-gap',
+          'grid-column-gap',
+          'grid-area',
+          'grid-row-start',
+          'grid-row-end',
+          'grid-column-start',
+          'grid-column-end',
+          'grid-column',
+          'grid-column-start',
+          'grid-column-end',
+          'grid-row',
+          'grid-row-start',
+          'grid-row-end',
+          'flex',
+          'flex-grow',
+          'flex-shrink',
+          'flex-basis',
+          'flex-flow',
+          'flex-direction',
+          'flex-wrap',
+          'justify-content',
+          'align-content',
+          'align-items',
+          'align-self',
+          'order',
+          'table-layout',
+          'empty-cells',
+          'caption-side',
+          'border-collapse',
+          'border-spacing',
+          'list-style',
+          'list-style-type',
+          'list-style-position',
+          'list-style-image',
+          'ruby-align',
+          'ruby-merge',
+          'ruby-position',
+          'box-sizing',
+          'width',
+          'min-width',
+          'max-width',
+          'height',
+          'min-height',
+          'max-height',
+          'padding',
+          'padding-top',
+          'padding-right',
+          'padding-bottom',
+          'padding-left',
+          'margin',
+          'margin-top',
+          'margin-right',
+          'margin-bottom',
+          'margin-left',
+          'border',
+          'border-width',
+          'border-top-width',
+          'border-right-width',
+          'border-bottom-width',
+          'border-left-width',
+          'border-style',
+          'border-top-style',
+          'border-right-style',
+          'border-bottom-style',
+          'border-left-style',
+          'border-color',
+          'border-top-color',
+          'border-right-color',
+          'border-bottom-color',
+          'border-left-color',
+          'border-image',
+          'border-image-source',
+          'border-image-slice',
+          'border-image-width',
+          'border-image-outset',
+          'border-image-repeat',
+          'border-top',
+          'border-top-width',
+          'border-top-style',
+          'border-top-color',
+          'border-top',
+          'border-right-width',
+          'border-right-style',
+          'border-right-color',
+          'border-bottom',
+          'border-bottom-width',
+          'border-bottom-style',
+          'border-bottom-color',
+          'border-left',
+          'border-left-width',
+          'border-left-style',
+          'border-left-color',
+          'border-radius',
+          'border-top-right-radius',
+          'border-bottom-right-radius',
+          'border-bottom-left-radius',
+          'border-top-left-radius',
+          'outline',
+          'outline-width',
+          'outline-color',
+          'outline-style',
+          'outline-offset',
+          'overflow',
+          'overflow-x',
+          'overflow-y',
+          'resize',
+          'visibility',
+          'font',
+          'font-style',
+          'font-variant',
+          'font-weight',
+          'font-stretch',
+          'font-size',
+          'font-family',
+          'font-synthesis',
+          'font-size-adjust',
+          'font-kerning',
+          'line-height',
+          'text-align',
+          'text-align-last',
+          'vertical-align',
+          'text-overflow',
+          'text-justify',
+          'text-transform',
+          'text-indent',
+          'text-emphasis',
+          'text-emphasis-style',
+          'text-emphasis-color',
+          'text-emphasis-position',
+          'text-decoration',
+          'text-decoration-color',
+          'text-decoration-style',
+          'text-decoration-line',
+          'text-underline-position',
+          'text-shadow',
+          'white-space',
+          'overflow-wrap',
+          'word-wrap',
+          'word-break',
+          'line-break',
+          'hyphens',
+          'letter-spacing',
+          'word-spacing',
+          'quotes',
+          'tab-size',
+          'orphans',
+          'writing-mode',
+          'text-combine-upright',
+          'unicode-bidi',
+          'text-orientation',
+          'direction',
+          'text-rendering',
+          'font-feature-settings',
+          'font-language-override',
+          'image-rendering',
+          'image-orientation',
+          'image-resolution',
+          'shape-image-threshold',
+          'shape-outside',
+          'shape-margin',
+          'color',
+          'background',
+          'background-image',
+          'background-position',
+          'background-size',
+          'background-repeat',
+          'background-origin',
+          'background-clip',
+          'background-attachment',
+          'background-color',
+          'background-blend-mode',
+          'isolation',
+          'clip-path',
+          'mask',
+          'mask-image',
+          'mask-mode',
+          'mask-position',
+          'mask-size',
+          'mask-repeat',
+          'mask-origin',
+          'mask-clip',
+          'mask-composite',
+          'mask-type',
+          'filter',
+          'box-shadow',
+          'opacity',
+          'transform-style',
+          'transform',
+          'transform-box',
+          'transform-origin',
+          'perspective',
+          'perspective-origin',
+          'backface-visibility',
+          'transition',
+          'transition-property',
+          'transition-duration',
+          'transition-timing-function',
+          'transition-delay',
+          'animation',
+          'animation-name',
+          'animation-duration',
+          'animation-timing-function',
+          'animation-delay',
+          'animation-iteration-count',
+          'animation-direction',
+          'animation-fill-mode',
+          'animation-play-state',
+          'scroll-behavior',
+          'scroll-snap-type',
+          'scroll-snap-destination',
+          'scroll-snap-coordinate',
+          'cursor',
+          'touch-action',
+          'caret-color',
+          'ime-mode',
+          'object-fit',
+          'object-position',
+          'content',
+          'counter-reset',
+          'counter-increment',
+          'will-change',
+          'pointer-events',
+          'all',
+          'page-break-before',
+          'page-break-after',
+          'page-break-inside',
+          'widows',
+        ],
+        indentation: 'tab',
+        'color-no-invalid-hex': true,
+        'font-family-no-missing-generic-family-keyword': null,
+        'font-family-name-quotes': null,
+        'function-url-quotes': 'always',
+        'at-rule-no-unknown': null,
+        'no-eol-whitespace': null,
+        'selector-attribute-quotes': 'always',
+        'string-quotes': 'single',
+        'selector-pseudo-element-colon-notation': null,
+        'at-rule-no-vendor-prefix': true,
+        'media-feature-name-no-vendor-prefix': null,
+        'media-feature-name-no-unknown': null,
+        'property-no-vendor-prefix': null,
+        'selector-no-vendor-prefix': true,
+        'value-no-vendor-prefix': true,
+        'selector-pseudo-class-no-unknown': null,
+        'shorthand-property-no-redundant-values': null,
+        'at-rule-empty-line-before': null,
+        'at-rule-name-space-after': null,
+        'comment-empty-line-before': null,
+        'declaration-bang-space-before': null,
+        'declaration-empty-line-before': null,
+        'function-comma-newline-after': null,
+        'function-name-case': null,
+        'function-parentheses-newline-inside': null,
+        'function-max-empty-lines': null,
+        'function-whitespace-after': null,
+        'number-leading-zero': null,
+        'number-no-trailing-zeros': null,
+        'rule-empty-line-before': null,
+        'selector-combinator-space-after': null,
+        'selector-list-comma-newline-after': null,
+        // "selector-pseudo-element-colon-notation": null,
+        'unit-no-unknown': null,
+        'no-descending-specificity': null,
+        'value-list-max-empty-lines': null,
+      },
+    };
+    ```
 
 
 
