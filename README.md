@@ -139,7 +139,10 @@ webpack.config.js
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    //配置页面入口
+    index: ['./src/index.js'],
+  },
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
@@ -240,7 +243,10 @@ dist/index.html
   webpack.config.js
   ```
   ...
-  entry: './src/index.js',
+  entry: {
+    //配置页面入口
+    index: ['./src/index.js'],
+  },
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
@@ -341,6 +347,28 @@ dist/index.html
 在浏览器中打开 dist下的index.html，如果一切访问都正常，你应该能看到以下文本：'Hello React'。
 
 ## 四、建立开发环境
+### 文件结构
+  ```
+  webpack4-react
+  |- /src
+    |- index.js
+    |- index.html
+  |- .babelrc
+  |- package.json
+  |- webpack.config.js
+  ```
+  src/index.html
+  ```
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>webpack4-react</title>
+    </head>
+    <body>
+      <div id="app"></div>
+    </body>
+  </html>
+  ```
 ### 1. webpack-dev-server
 + 1. 下载依赖
     ```
@@ -351,7 +379,10 @@ dist/index.html
     webpack.config.js
     ```
     ...
-    entry: './src/index.js',
+    entry: {
+      //配置页面入口
+      index: ['./src/index.js'],
+    },
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist')
@@ -371,6 +402,7 @@ dist/index.html
     
     webpack.config.js
     ```
+    const HtmlWebpackPlugin = require('html-webpack-plugin');
     ...
     devServer: {
       contentBase: '/src',
@@ -451,6 +483,19 @@ package.json
       }
     ```
 + 3. src/index.js 中引入css
+    
+    src 下新建 style/reset.css
+    style/reset.css
+    ```
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    div {
+      font-size: 20px;
+    }
+    ```
+    src/index.js
     ```
     import './style/reset.css';
     ```
@@ -777,7 +822,10 @@ ReactDom.render(
     const { postCssLoader, styleLoader, sassLoader, cssLoader } = utils.loadersConfig;
 
     module.exports = {
-      entry: './src/index.js',
+      entry: {
+        //配置页面入口
+        index: ['./src/index.js'],
+      },
       output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, '../dist'),
