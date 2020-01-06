@@ -434,7 +434,7 @@ src/index.html
   npm install --save-dev webpack-dev-server
   ```
 - 2. webpack 配置文件中配置 webpack-dev-server
-  webpack.config.js
+     webpack.config.js
   ```
   ...
   entry: {
@@ -459,7 +459,7 @@ src/index.html
   npm install --save-dev html-webpack-plugin
   ```
 - 2. webpack 配置文件中配置 webpack-dev-server
-  webpack.config.js
+     webpack.config.js
   ```
   const HtmlWebpackPlugin = require('html-webpack-plugin');
   ...
@@ -549,8 +549,8 @@ package.json
     }
   ```
 - 3. src/index.js 中引入 css
-  src 下新建 style/reset.css
-  style/reset.css
+     src 下新建 style/reset.css
+     style/reset.css
   ```
   * {
     padding: 0;
@@ -668,7 +668,7 @@ package.json
   ```
 
 - 4. 新增 CSS 相关的 webpack 配置
-  根目录下新建 tools/utils.js
+     根目录下新建 tools/utils.js
   ```
   // css 配置
   const styleLoader = {
@@ -738,7 +738,7 @@ package.json
   };
   ```
 - 5. 新增 postcss-loader 配置文件
-  根目录下新增 postcss.config.js
+     根目录下新增 postcss.config.js
   ```
   const AUTOPREFIXER_BROWSERS = [
     'Android 2.3',
@@ -794,7 +794,7 @@ npm install --save @babel/runtime core-js
   ...
   ```
 - 3. React 组件中 引入图片
-  src/components/Date/index.jsx
+     src/components/Date/index.jsx
   ```
   ...
   import reactLogo from './../../images/React.svg';
@@ -1034,13 +1034,13 @@ ReactDom.render(
   ```
 
 - 3. npm 脚本命令更改
-  package.json
+     package.json
   ```
   "dev": "webpack-dev-server --open --config webpack/webpack.dev.js",
   "build": "webpack --config webpack/webpack.production.js"
   ```
 - 4. 设置环境变量
-  下载依赖
+     下载依赖
   ```
   npm install --save-dev cross-env
   ```
@@ -1278,6 +1278,64 @@ ReactDom.render(
   },
   ```
 
+- 3. 测试语法支持
+
+  src/index.js
+
+  ```
+  async function f() {
+    return 'hello world';
+  }
+  function* helloWorldGenerator() {
+    yield 'hello';
+    yield 'world';
+    return 'ending';
+  }
+  const hw = helloWorldGenerator();
+  console.log('Generator>>>>>>', hw.next());
+  const arr = [1, 2, 3, 4, 5, 1, 2, 3, 5];
+  const setArr = new Set(arr);
+  console.log('setArr?>>>>>>', setArr);
+  const m = new Map();
+  console.log('Map>>>>>>>>', m);
+  f().then(v => console.log('async>>>>', v));
+  // IE 不支持 Symbol
+  const helloSymbol = Symbol('www');
+  console.log('Symbol>>>>>>', helloSymbol);
+  console.log('flat>>>>>>', [1, [2, [3]]].flat(Infinity));
+
+  console.log('---------------');
+  console.log('Promise');
+  new Promise(resolve => {
+    setTimeout(() => {
+      resolve('hello');
+    }, 2000);
+  }).then(value => {
+    console.log(value);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve('world');
+      }, 2000);
+    });
+  }).then(value => {
+    console.log(`${value} world`);
+  });
+  console.log('---------------');
+
+  const target = {};
+  const handler = {};
+  const proxy = new Proxy(target, handler);
+  proxy.a = 'b';
+  console.log('proxy>>>>>', target.a);
+  // 不支持
+  // class A {
+  // 	static name = 'name';
+  // }
+  // console.log('static class>>>>>', new A());
+  ```
+
+  打包 `npm run build` , 把 dist 文件的 index.html 用 IE 打开验证
+
 ## 九、 代码规范- eslint & stylelint
 
 ### 1. 添加编辑器配置文件以及插件
@@ -1328,7 +1386,7 @@ setting.json
 
 - 1. 下载依赖
   ```
-  npm insatll --save-dev babel-eslint eslint eslint-config-airbnb eslint-config-react-app eslint-friendly-formatter eslint-loader eslint-plugin-flowtype eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react autoprefixer
+  npm i babel-eslint eslint eslint-config-airbnb eslint-config-react-app eslint-friendly-formatter eslint-loader eslint-plugin-flowtype eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react autoprefixer -D
   ```
 - 2. webpack 的 eslint 配置
 
@@ -1558,26 +1616,33 @@ setting.json
 
 - 1. 下载依赖
   ```
-  npm insatll --save-dev stylelint stylelint-config-recommended stylelint-config-standard stylelint-order stylelint-webpack-plugin
+  npm i stylelint stylelint-config-recommended stylelint-config-standard stylelint-order stylelint-webpack-plugin -D
   ```
 - 2. stylelint 配置
 
   webpack.dev.js
 
   ```
-  const merge = require('webpack-merge');
-  const UglifyJSPlugin = require('uglifyjs-webpack-plugin'); // 用来缩小（压缩优化）js文件
-  const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-  const common = require('./webpack.common.js');
+  const merge = require("webpack-merge");
+  const StyleLintPlugin = require("stylelint-webpack-plugin");
+  const common = require("./webpack.common.js");
   module.exports = merge(common, {
-    mode: 'production',
-    devtool: 'source-map',
+    mode: "development",
+    devtool: "inline-source-map",
+    devServer: {
+      contentBase: "/src",
+      hot: true
+    },
     plugins: [
-      new UglifyJSPlugin({
-        sourceMap: true,
-      }),
-      new CleanWebpackPlugin(),
-    ],
+      new StyleLintPlugin({
+        fix: true,
+        files: ["src/**/*.scss"],
+        failOnError: false,
+        quiet: true,
+        syntax: "scss",
+        cache: true
+      })
+    ]
   });
   ```
 
