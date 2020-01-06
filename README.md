@@ -1,10 +1,16 @@
-# 从零开始的 webpack4
+# 从零开始的 webpack4 教程
 
 ## 前提条件
 
 安装 node.js
 当前 node.js 版本 ：v12.13.1
 当前 npm 版本 ： 6.12.1
+
+> 2020/1/6 更新 自己重新按照文档走一遍发现有点遗漏，进行补充
+
+> 本文从零开始搭建 webpack ，只需要按照步骤一步一步走，最后就可搭建成功 ，请放心食用，无毒
+
+[完整源码](https://github.com/gengliangxiang/webpack-react)
 
 ## 一、 简易打包
 
@@ -1962,3 +1968,70 @@ setting.json
     },
   };
   ```
+
+## 十、 webpack DLL
+
+> 在用 Webpack 打包的时候，对于一些不经常更新的第三方库，比如 react，lodash，我们并不希望每次打包都去编译他们，所以，应该只打包一次，然后多次使用,于是有了 DLL 的打包
+
+下载依赖：
+
+```
+npm install webpack-bundle-analyzer --save-dev
+```
+
+- 1. 新建配置文件
+
+  webpack 文件夹下新建文件 `webpack.dll.config.js`
+  webpack.dll.config.js
+
+  ```
+  const webpack = require('webpack');
+  const library = '[name]_lib';
+  const path = require('path');
+  const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+  console.log('process.env.NODE_ENV>>>>', process.env.NODE_ENV)
+  module.exports = {
+    mode: 'production',
+    entry: {
+      vendors: [
+        'react',
+        '@babel/polyfill',
+        'react-dom',
+        'core-js',
+        'classnames'
+      ],
+    },
+    output: {
+      filename: '[name].dll.js',
+      path: path.resolve(__dirname, './../ools'),
+      library,
+    },
+    plugins: [
+      new webpack.DllPlugin({
+        path: path.join(__dirname, './../tools/[name]-manifest.json'),
+        name: library,
+      }),
+      new BundleAnalyzerPlugin(),
+    ],
+  };
+  ```
+
+* 2 webpack.common.js 中配置
+  ```
+  plugins: [
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require('./tools/vendors-manifest.json'),
+    }),
+  ]
+  ```
+* 3. 新建 dll 脚本命令
+  ```
+  "scripts": {
+    ...
+    "dll": "cross-env NODE_ENV=production webpack --config webpack/webpack.dll.config.js",
+    ...
+  },
+  ```
+
+执行 `npm run dll` 会在 tools 文件夹下生成对应的 dll 文件： `vendors-manifest.json` 和 `vendors.dll.js`,同时会自动打开浏览器查看到对应文件大小

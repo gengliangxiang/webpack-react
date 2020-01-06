@@ -73,6 +73,10 @@ module.exports = {
     }
   },
   plugins: [
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      manifest: require("./../tools/vendors-manifest.json")
+    }),
     new MiniCssExtractPlugin({
       filename: devMode ? "[name].css" : "[name]_[hash:5].css",
       chunkFilename: devMode ? "[id].css" : "[id]_[hash:5].css",
