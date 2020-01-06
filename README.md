@@ -923,24 +923,23 @@ ReactDom.render(
         hot: true,
       }
     });
+    ```
     webpack.production.js
     ```
-    ```
-      const merge = require('webpack-merge');
-      const UglifyJSPlugin = require('uglifyjs-webpack-plugin'); // 用来缩小（压缩优化）js文件
-      const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-      const common = require('./webpack.common.js');
-      module.exports = merge(common, {
-        mode: 'production',
-        devtool: 'source-map',
-        plugins: [
-          new UglifyJSPlugin({
-            sourceMap: true,
-          }),
-          new CleanWebpackPlugin(),
-        ],
-      });
-
+    const merge = require('webpack-merge');
+    const UglifyJSPlugin = require('uglifyjs-webpack-plugin'); // 用来缩小（压缩优化）js文件
+    const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+    const common = require('./webpack.common.js');
+    module.exports = merge(common, {
+      mode: 'production',
+      devtool: 'source-map',
+      plugins: [
+        new UglifyJSPlugin({
+          sourceMap: true,
+        }),
+        new CleanWebpackPlugin(),
+      ],
+    });
     ```
 + 3. npm 脚本命令更改
     
@@ -955,6 +954,7 @@ ReactDom.render(
     ```
     npm install --save-dev cross-env
     ```
+    
     npm 脚本命令更改
     ```
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --config webpack/webpack.dev.js",
@@ -969,6 +969,8 @@ ReactDom.render(
     npm install --save-dev html-loader
     ```
 + 2. 配置
+
+    在根目录下添加一个 react.ico 的图片待用，用于在 HtmlWebpackPlugin 中配置网页的 ico 图片
 
     webpack.config.common.js
     ```
@@ -1030,11 +1032,12 @@ ReactDom.render(
     ...
     module: {
       rules: [
-        test: /\.html$/,
-        use: 'html-loader',
+        {
+          test: /\.html$/,
+          use: 'html-loader',
+        },
       ]
     }
-    npm install --save-dev html-loader
     ```
 
 ### 3. 压缩 提取 CSS
@@ -1042,9 +1045,9 @@ ReactDom.render(
     ```
     npm install --save-dev mini-css-extract-plugin
     ```
-+ 2. 在生产环境中压缩CSS, 开发环境中不压缩
++ 2. 在生产环境中压缩CSS, 开发环境中不压缩 scss 
 
-    webpack.config.common.js
+    webpack.config.common.js 其中 关于 \.scss$ 的 rules 替换下
     ```
     ...
     const devMode = process.env.NODE_ENV !== 'production';
@@ -1059,26 +1062,35 @@ ReactDom.render(
           chunkFilename: devMode ? '[id].css' : '[id]_[hash:5].css',
           disable: false, //是否禁用此插件
           allChunks: true,
-		}),
+        }),
         ...
       ]
       ...
       module: {
-        ...
-        {
-          test: /\.scss$/,
-          include: [/pages/, /components/, /style/],
-          use: [
-            devMode ? styleLoader : MiniCssExtractPlugin.loader,
-            cssLoader,
-            postCssLoader,
-            sassLoader,
-          ],
-        },
-        ...
+        rules: [
+          {
+            test: /\.html$/,
+            use: "html-loader"
+          },
+          {
+            test: /\.css$/,
+            exclude: /node_modules/,
+            use: [styleLoader, cssLoader, postCssLoader]
+          },
+          {
+            test: /\.scss$/,
+            include: [/pages/, /components/, /style/],
+            use: [
+              devMode ? styleLoader : MiniCssExtractPlugin.loader,
+              cssLoader,
+              postCssLoader,
+              sassLoader,
+            ],
+          },
+        ],
       }
-    }
     ```
++ 3. 再次执行 `npm run build` 会发现在dist文件夹里多了些css，css.map 文件
 ### 4. 生产环境压缩 JS, 打包时清除dist文件夹
 + 1. 下载依赖
     ```
