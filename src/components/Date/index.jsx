@@ -32,8 +32,8 @@ class DateComponent extends React.Component {
 			<div>
 				<div className={style.title}>时间</div>
 				<div>
-					<img className={style.logo} src={reactLogo} alt='' />
-					<img className={style.logo} src={webpackLogo} alt='' />
+					<img className={style.logo} src={reactLogo} alt="" />
+					<img className={style.logo} src={webpackLogo} alt="" />
 				</div>
 				<div className={style.title}>{date.toLocaleTimeString()}</div>
 			</div>

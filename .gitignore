@@ -1,5 +1,11 @@
 .DS_Store
 yarn.lock
 .stylelintcache
-node_modules/
+*.lock
 /dist/
+node_modules/
+mock/coverage/
+mock/run/
+mock/logs/
+mock/logs/
+mock/*.lock
