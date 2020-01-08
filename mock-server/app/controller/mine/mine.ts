@@ -2,14 +2,17 @@ import { Controller } from "egg";
 import { Get, Post, Prefix } from "egg-shell-decorators";
 import * as Mock from "mockjs";
 
+const { Random } = Mock;
 const data = Mock.mock({
 	"list|1-10": [
 		{
 			"id|+1": 1,
 			email: "@email",
-			contactPerson: "@cname",
-			cstNm: "@cname",
-			phone: /^[1][3,4,5,6,7,8][0-9]{9}$/,
+			name: "@cname",
+			description: "@ctitle(20)",
+			date: "@date",
+			phone: /^1[356789][1-9]\d{8}/,
+			adress: () => (Random.province() + Random.city() + Random.county()),
 			"cstTpCd|1-10": 0,
 			"intSt|1-3": 0
 		}
