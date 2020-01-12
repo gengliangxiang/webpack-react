@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import DateComponents from '@components/Date/index.jsx';
-import TableData from '@components/TableData/index.jsx';
+// import { HashRouter } from 'react-router-dom';
+// import { renderRoutes } from 'react-router-config';
+import Router from '@router/index';
+
+
 import '@style/reset.scss';
+import 'antd/dist/antd.css';
 
 // async function f() {
 // 	return 'hello world';
@@ -54,13 +58,7 @@ import '@style/reset.scss';
 // }
 // console.log('static class>>>>>', new A());
 
-
-const hello = 'Hello React';
 ReactDom.render(
-	<div>
-		<div>{hello}</div>
-		<DateComponents />
-		<TableData />
-	</div>,
+	<Router />,
 	document.getElementById('app'),
 );

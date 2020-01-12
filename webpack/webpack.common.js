@@ -38,6 +38,7 @@ module.exports = {
 		alias: {
 			"@assets": path.resolve("./src/assets"),
 			"@common": path.resolve("./src/common"),
+			"@router": path.resolve("./src/router"),
 			"@components": path.resolve("./src/components"),
 			"@images": path.resolve("./src/images"),
 			"@pages": path.resolve("./src/pages"),
@@ -145,6 +146,11 @@ module.exports = {
 				test: /\.css$/,
 				exclude: /node_modules/,
 				use: [styleLoader, cssLoader, postCssLoader]
+			},
+			{
+				test: /\.css$/,
+				include: /node_modules/,
+				use: ["style-loader", "css-loader"]
 			},
 			{
 				test: /\.scss$/,
