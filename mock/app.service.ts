@@ -1,10 +1,9 @@
-import { Controller } from "egg";
-import { Get, Prefix } from "egg-shell-decorators";
+import { Injectable } from '@nestjs/common';
 import * as Mock from "mockjs";
 
 const { Random } = Mock;
 const data = Mock.mock({
-	"list|5-10": [
+	"data|5-10": [
 		{
 			"id|+1": "@id",
 			email: "@email",
@@ -22,14 +21,9 @@ const data = Mock.mock({
 	]
 });
 
-@Prefix("/")
-export default class HomeController extends Controller {
-	@Get("/")
-	public async index() {
-		this.ctx.body = {
-			status: 200,
-			success: true,
-			data: data.list
-		};
-	}
+@Injectable()
+export class AppService {
+  getHello(): string {
+    return data;
+  }
 }

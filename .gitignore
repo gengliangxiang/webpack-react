@@ -3,9 +3,5 @@ yarn.lock
 .stylelintcache
 *.lock
 /dist/
+/mock/dist/
 node_modules/
-mock/coverage/
-mock/run/
-mock/logs/
-mock/logs/
-mock/*.lock

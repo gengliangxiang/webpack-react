@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const proxy = require("http-proxy-middleware");
 const consoleStyle = require("./consoleStyle");
 
@@ -17,7 +16,7 @@ const commonProxy = proxy({
 	autoRewrite: true,
 });
 const mockProxy = proxy({
-	target: "http://localhost:7001",
+	target: "http://localhost:7080",
 	changeOrigin: true,
 });
 
