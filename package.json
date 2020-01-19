@@ -26,10 +26,13 @@
     "axios": "^0.19.1",
     "core-js": "^3.6.1",
     "lodash": "^4.17.15",
+    "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-redux": "^7.1.3",
     "react-router-config": "^5.1.1",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.7",

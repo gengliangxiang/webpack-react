@@ -1,18 +1,26 @@
-import React from 'react';
-import { renderRoutes } from 'react-router-config';
+import React, { useState, useEffect } from 'react';
 import webpackLogo from '@images/webpack.svg';
-import Route from '@router/config';
+import { Button } from 'antd';
 
-class DateComponent extends React.Component {
-	render() {
-		return (
-			<div>
-				<div>
-					<img src={webpackLogo} alt="" />
-					{renderRoutes(Route.routes)}
-				</div>
-			</div>
-		);
-	}
+function DComponent() {
+	const [count, setCount] = useState(0);
+
+	useEffect(() => {
+		document.title = `You clicked ${count} times`;
+	});
+	const str = `You clicked ${count} times`;
+	return (
+		<div>
+			<p>{str}</p>
+			<Button
+				type="primary"
+				style={{ marginLeft: 8 }}
+				onClick={() => setCount(count + 1)}
+			>
+				Click me
+			</Button>
+			<img src={webpackLogo} alt="" />
+		</div>
+	);
 }
-export default DateComponent;
+export default DComponent;

@@ -13,16 +13,14 @@ class LayoutComponent extends React.Component {
 	}
 
 	render() {
-		const {route} = this.state;
+		const { route } = this.state;
 		return (
 			<div className={style.layout}>
 				<div className={style.menu}>
 					<Menu />
 				</div>
 				<div className={style.layoutRight}>
-					<div className={style.header}>
-						{JSON.stringify(route)}
-					</div>
+					<div className={style.header}>111</div>
 					<div className={style.content}>
 						{renderRoutes(route.routes)}
 					</div>

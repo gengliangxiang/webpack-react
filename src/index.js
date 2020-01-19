@@ -5,7 +5,4 @@ import Router from '@router/index';
 import '@style/reset.scss';
 import 'antd/dist/antd.css';
 
-ReactDom.render(
-	<Router />,
-	document.getElementById('app'),
-);
+ReactDom.render(<Router />, document.getElementById('app'));
