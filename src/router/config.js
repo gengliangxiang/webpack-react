@@ -1,4 +1,5 @@
 import Layout from '@pages/Layout/index';
+import CSSPage from '@pages/CSS/index';
 import React from '@pages/page1/index';
 import Webpack from '@pages/page2/index';
 import Table from '@components/TableData/index';
@@ -27,6 +28,11 @@ const routes = [
 				path: '/date',
 				exact: true,
 				component: DateComponent,
+			},
+			{
+				path: '/CSS',
+				exact: true,
+				component: CSSPage,
 			},
 			// {
 			// 	path: '/webpack',

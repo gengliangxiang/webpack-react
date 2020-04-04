@@ -1,25 +1,29 @@
 import React from 'react';
 import { HashRouter, Link } from 'react-router-dom';
-import { Menu } from 'antd';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 class Sider extends React.Component {
 	render() {
 		return (
 			<HashRouter>
-				<Menu>
-					<Menu.Item>
+				<List>
+					<ListItem>
 						<Link to="/">React</Link>
-					</Menu.Item>
-					<Menu.Item>
+					</ListItem>
+					<ListItem>
 						<Link to="/webpack">Webpack</Link>
-					</Menu.Item>
-					<Menu.Item>
+					</ListItem>
+					<ListItem>
 						<Link to="/table">Table</Link>
-					</Menu.Item>
-					<Menu.Item>
+					</ListItem>
+					<ListItem>
 						<Link to="/date">Date</Link>
-					</Menu.Item>
-				</Menu>
+					</ListItem>
+					<ListItem>
+						<Link to="/CSS">CSS</Link>
+					</ListItem>
+				</List>
 			</HashRouter>
 		);
 	}
