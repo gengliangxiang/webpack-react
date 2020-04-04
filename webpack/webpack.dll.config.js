@@ -6,7 +6,7 @@ console.log("process.env.NODE_ENV>>>>", process.env.NODE_ENV);
 module.exports = {
 	mode: "production",
 	entry: {
-		vendors: ["react", "@babel/polyfill", "react-dom", "core-js"]
+		vendors: ["react", "@babel/polyfill", "react-dom", "core-js", "@material-ui/core"]
 	},
 	output: {
 		filename: "[name].dll.js",

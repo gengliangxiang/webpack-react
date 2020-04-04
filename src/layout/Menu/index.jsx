@@ -9,7 +9,10 @@ class Sider extends React.Component {
 			<HashRouter>
 				<List>
 					<ListItem>
-						<Link to="/">React</Link>
+						<Link to="/login">Login</Link>
+					</ListItem>
+					<ListItem>
+						<Link to="/home">React</Link>
 					</ListItem>
 					<ListItem>
 						<Link to="/webpack">Webpack</Link>

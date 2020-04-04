@@ -1,38 +1,34 @@
-import Layout from '@pages/Layout/index';
-import CSSPage from '@pages/CSS/index';
-import React from '@pages/page1/index';
-import Webpack from '@pages/page2/index';
-import Table from '@components/TableData/index';
-import DateComponent from '@components/Date/index';
+import loadable from '@router/loadable';
 
 const routes = [
 	{
-		component: Layout,
+		path: '/login',
+		component: loadable(() => import('@pages/login/index')),
+	},
+	{
+		path: '/',
+		component: loadable(() => import('@layout/index')),
 		routes: [
 			{
-				path: '/',
+				path: '/home',
 				exact: true,
-				component: React,
+				component: loadable(() => import('@pages/page1/index')),
 			},
 			{
 				path: '/webpack',
-				exact: true,
-				component: Webpack,
+				component: loadable(() => import('@pages/page2/index')),
 			},
 			{
 				path: '/table',
-				exact: true,
-				component: Table,
+				component: loadable(() => import('@components/TableData/index')),
 			},
 			{
 				path: '/date',
-				exact: true,
-				component: DateComponent,
+				component: loadable(() => import('@components/Date/index')),
 			},
 			{
 				path: '/CSS',
-				exact: true,
-				component: CSSPage,
+				component: loadable(() => import('@pages/CSS/index')),
 			},
 			// {
 			// 	path: '/webpack',
