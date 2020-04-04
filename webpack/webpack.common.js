@@ -38,10 +38,11 @@ module.exports = {
 		alias: {
 			"@assets": path.resolve("./src/assets"),
 			"@common": path.resolve("./src/common"),
-			"@router": path.resolve("./src/router"),
 			"@components": path.resolve("./src/components"),
 			"@images": path.resolve("./src/images"),
+			"@layout": path.resolve("./src/layout"),
 			"@pages": path.resolve("./src/pages"),
+			"@router": path.resolve("./src/router"),
 			"@style": path.resolve("./src/style")
 		}
 	},
