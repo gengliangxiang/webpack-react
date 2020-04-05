@@ -3,8 +3,45 @@
 	flex-direction: row;
 }
 .menu {
-	width: 200px;
+	width: 260px;
+}
+.menu-header {
+	height: 50px;
+	background: url('../images/webpack.svg') no-repeat center center;
+}
+.menu-fixed {
+	position: fixed;
+	width: 260px;
+	height: 100vh;
+	background-image: url('../images/sidebar-1.jpg');
+	background-position: center center;
+	background-size: cover;
+}
+.menu-fixed::after {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.7;
+	content: '';
+	pointer-events: none;
+}
+.sidebar-1 {
+	background-image: url('../images/sidebar-1.jpg');
+}
+.sidebar-2 {
+	background-image: url('../images/sidebar-2.jpg');
+}
+.sidebar-3 {
+	background-image: url('../images/sidebar-3.jpg');
 }
 .body {
+	flex: 1;
+}
+.layoutRight {
 	flex: 1;
 }
