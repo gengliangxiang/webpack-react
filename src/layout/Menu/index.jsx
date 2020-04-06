@@ -107,6 +107,19 @@ export default function NestedList() {
 						</ListItemIcon>
 						<ListItemText primary="CSS" />
 					</ListItem>
+					<ListItem
+						button
+						className={classes.nested}
+						component={Link}
+						to="/table"
+						selected={selectedIndex === 4}
+						onClick={event => handleListItemClick(event, 4)}
+					>
+						<ListItemIcon>
+							<StarBorder />
+						</ListItemIcon>
+						<ListItemText primary="Table" />
+					</ListItem>
 				</List>
 			</Collapse>
 		</List>

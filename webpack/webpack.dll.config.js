@@ -10,12 +10,12 @@ module.exports = {
 	},
 	output: {
 		filename: "[name].dll.js",
-		path: path.resolve(__dirname, "./../tools"),
+		path: path.resolve(__dirname, "./../config"),
 		library
 	},
 	plugins: [
 		new webpack.DllPlugin({
-			path: path.join(__dirname, "./../tools/[name]-manifest.json"),
+			path: path.join(__dirname, "./../config/[name]-manifest.json"),
 			name: library
 		}),
 		new BundleAnalyzerPlugin()

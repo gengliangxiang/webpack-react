@@ -1,5 +1,5 @@
 import React from 'react';
-import Request from '@common/request';
+import Request from '@http/request';
 
 import style from './style.scss';
 

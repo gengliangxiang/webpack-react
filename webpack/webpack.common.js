@@ -7,13 +7,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 const devMode = process.env.NODE_ENV !== 'production';
 
-const utils = require('./../tools/utils');
+const cssLoaderConfig = require('./../config/cssLoader');
 const {
 	postCssLoader,
 	styleLoader,
 	sassLoader,
 	cssLoader,
-} = utils.loadersConfig;
+} = cssLoaderConfig.loadersConfig;
 
 module.exports = {
 	entry: {
@@ -39,12 +39,14 @@ module.exports = {
 			'@assets': path.resolve('./src/assets'),
 			'@common': path.resolve('./src/common'),
 			'@components': path.resolve('./src/components'),
+			'@http': path.resolve('./src/http'),
 			'@images': path.resolve('./src/images'),
 			'@layout': path.resolve('./src/layout'),
 			'@pages': path.resolve('./src/pages'),
 			'@router': path.resolve('./src/router'),
-			'@style': path.resolve('./src/style'),
 			'@store': path.resolve('./src/store'),
+			'@style': path.resolve('./src/style'),
+			'@utils': path.resolve('./src/utils'),
 		},
 	},
 	optimization: {
@@ -78,7 +80,7 @@ module.exports = {
 	plugins: [
 		new webpack.DllReferencePlugin({
 			context: __dirname,
-			manifest: require('./../tools/vendors-manifest.json'),
+			manifest: require('./../config/vendors-manifest.json'),
 		}),
 		new MiniCssExtractPlugin({
 			filename: devMode ? '[name].css' : '[name]_[hash:5].css',
