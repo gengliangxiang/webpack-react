@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import classnames from 'classnames';
+import { inject, observer } from 'mobx-react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -41,12 +42,12 @@ const useStyles = makeStyles({
 
 function LayoutComponent(props) {
 	const classes = useStyles();
-	const { route } = props;
+	const { route, menuStore } = props;
 	const [open, setOpen] = React.useState(false);
-	const [sidebar, setSidebar] = React.useState(true);
+	const { bg } = menuStore;
 	const sidebarClass = classnames(
 		style['menu-fixed'],
-		style[`sidebar-${sidebar}`],
+		style[`sidebar-${bg}`],
 	);
 
 	const openDialog = () => {
@@ -56,7 +57,7 @@ function LayoutComponent(props) {
 		setOpen(false);
 	};
 	const changeSidebar = index => {
-		setSidebar(index);
+		menuStore.changeSidebar(index);
 	};
 
 	return (
@@ -85,4 +86,4 @@ function LayoutComponent(props) {
 	);
 }
 
-export default LayoutComponent;
+export default inject('menuStore')(observer(LayoutComponent));

@@ -1,65 +1,66 @@
-const path = require("path");
-const os = require("os");
-const webpack = require("webpack");
-const HappyPack = require("happypack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path');
+const os = require('os');
+const webpack = require('webpack');
+const HappyPack = require('happypack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
-const devMode = process.env.NODE_ENV !== "production";
+const devMode = process.env.NODE_ENV !== 'production';
 
-const utils = require("./../tools/utils");
+const utils = require('./../tools/utils');
 const {
 	postCssLoader,
 	styleLoader,
 	sassLoader,
-	cssLoader
+	cssLoader,
 } = utils.loadersConfig;
 
 module.exports = {
 	entry: {
 		//配置页面入口
-		index: ["@babel/polyfill", "./src/index.js"]
+		index: ['@babel/polyfill', './src/index.js'],
 	},
 	output: {
 		//配置输出选项
-		path: path.resolve(__dirname, "../dist"), //输出路径为，当前路径下
-		filename: "[name].[hash:5].js" //输出后的文件名称
+		path: path.resolve(__dirname, '../dist'), //输出路径为，当前路径下
+		filename: '[name].[hash:5].js', //输出后的文件名称
 	},
 	devServer: {
-		contentBase: "/src",
-		hot: true
+		contentBase: '/src',
+		hot: true,
 	},
 	resolve: {
 		// 设置模块导入规则，import/require时会直接在这些目录找文件
-		modules: ["node_modules"],
+		modules: ['node_modules'],
 		// import导入时省略后缀
-		extensions: [".js", ".jsx", ".scss", ".less", ".css", ".json"],
+		extensions: ['.js', '.jsx', '.scss', '.less', '.css', '.json'],
 		// import导入时别名
 		alias: {
-			"@assets": path.resolve("./src/assets"),
-			"@common": path.resolve("./src/common"),
-			"@components": path.resolve("./src/components"),
-			"@images": path.resolve("./src/images"),
-			"@layout": path.resolve("./src/layout"),
-			"@pages": path.resolve("./src/pages"),
-			"@router": path.resolve("./src/router"),
-			"@style": path.resolve("./src/style")
-		}
+			'@assets': path.resolve('./src/assets'),
+			'@common': path.resolve('./src/common'),
+			'@components': path.resolve('./src/components'),
+			'@images': path.resolve('./src/images'),
+			'@layout': path.resolve('./src/layout'),
+			'@pages': path.resolve('./src/pages'),
+			'@router': path.resolve('./src/router'),
+			'@style': path.resolve('./src/style'),
+			'@store': path.resolve('./src/store'),
+		},
 	},
 	optimization: {
 		splitChunks: {
-			chunks: "async", //默认作用于异步chunk，值为all/initial/async/function(chunk),值为function时第一个参数为遍历所有入口chunk时的chunk模块，chunk._modules为chunk所有依赖的模块，通过chunk的名字和所有依赖模块的resource可以自由配置,会抽取所有满足条件chunk的公有模块，以及模块的所有依赖模块，包括css
+			chunks: 'async', //默认作用于异步chunk，值为all/initial/async/function(chunk),值为function时第一个参数为遍历所有入口chunk时的chunk模块，chunk._modules为chunk所有依赖的模块，通过chunk的名字和所有依赖模块的resource可以自由配置,会抽取所有满足条件chunk的公有模块，以及模块的所有依赖模块，包括css
 			minSize: 30000, //表示在压缩前的最小模块大小,默认值是30kb
 			minChunks: 1, // 表示被引用次数，默认为1；
 			maxAsyncRequests: 5, //所有异步请求不得超过5个
 			maxInitialRequests: 3, //初始话并行请求不得超过3个
-			automaticNameDelimiter: "~", //名称分隔符，默认是~
+			automaticNameDelimiter: '~', //名称分隔符，默认是~
 			name: true, //打包后的名称，默认是chunk的名字通过分隔符（默认是～）分隔
 			cacheGroups: {
 				//设置缓存组用来抽取满足不同规则的chunk,下面以生成common为例
 				common: {
-					name: "common", //抽取的chunk的名字
-					chunks: "initial",
+					name: 'common', //抽取的chunk的名字
+					chunks: 'initial',
 					chunks(chunk) {
 						//同外层的参数配置，覆盖外层的chunks，以chunk为维度进行抽取
 					},
@@ -69,40 +70,40 @@ module.exports = {
 					priority: 10, //优先级，一个chunk很可能满足多个缓存组，会被抽取到优先级高的缓存组中
 					minChunks: 2, //最少被几个chunk引用
 					reuseExistingChunk: true, //  如果该chunk中引用了已经被抽取的chunk，直接引用该chunk，不会重复打包代码
-					enforce: true // 如果cacheGroup中没有设置minSize，则据此判断是否使用上层的minSize，true：则使用0，false：使用上层minSize
-				}
-			}
-		}
+					enforce: true, // 如果cacheGroup中没有设置minSize，则据此判断是否使用上层的minSize，true：则使用0，false：使用上层minSize
+				},
+			},
+		},
 	},
 	plugins: [
 		new webpack.DllReferencePlugin({
 			context: __dirname,
-			manifest: require("./../tools/vendors-manifest.json")
+			manifest: require('./../tools/vendors-manifest.json'),
 		}),
 		new MiniCssExtractPlugin({
-			filename: devMode ? "[name].css" : "[name]_[hash:5].css",
-			chunkFilename: devMode ? "[id].css" : "[id]_[hash:5].css",
+			filename: devMode ? '[name].css' : '[name]_[hash:5].css',
+			chunkFilename: devMode ? '[id].css' : '[id]_[hash:5].css',
 			disable: false, //是否禁用此插件
-			allChunks: true
+			allChunks: true,
 		}),
 		new HappyPack({
-			id: "babel", //用id来标识 happypack处理那里类文件
+			id: 'babel', //用id来标识 happypack处理那里类文件
 			threadPool: happyThreadPool, //共享进程池
 			loaders: [
 				{
-					loader: "babel-loader"
-				}
-			]
+					loader: 'babel-loader',
+				},
+			],
 		}),
 		new HtmlWebpackPlugin({
-			title: "webpack & react",
-			template: "./src/index.html", //本地模板文件的位置，支持加载器(如handlebars、ejs、undersore、html等)，如比如 handlebars!src/index.hbs；
-			filename: "./index.html", //输出文件的文件名称，默认为index.html，不配置就是该文件名；此外，还可以为输出文件指定目录位置（例如'html/index.html'）
-			chunks: ["index"], // chunks主要用于多入口文件，当你有多个入口文件，那就回编译后生成多个打包后的文件，那么chunks 就能选择你要使用那些js文件
-			inject: "body", //1、true或者body：所有JavaScript资源插入到body元素的底部2、head: 所有JavaScript资源插入到head元素中3、false： 所有静态资源css和JavaScript都不会注入到模板文件中
+			title: 'webpack & react',
+			template: './src/index.html', //本地模板文件的位置，支持加载器(如handlebars、ejs、undersore、html等)，如比如 handlebars!src/index.hbs；
+			filename: './index.html', //输出文件的文件名称，默认为index.html，不配置就是该文件名；此外，还可以为输出文件指定目录位置（例如'html/index.html'）
+			chunks: ['index'], // chunks主要用于多入口文件，当你有多个入口文件，那就回编译后生成多个打包后的文件，那么chunks 就能选择你要使用那些js文件
+			inject: 'body', //1、true或者body：所有JavaScript资源插入到body元素的底部2、head: 所有JavaScript资源插入到head元素中3、false： 所有静态资源css和JavaScript都不会注入到模板文件中
 			showErrors: true, //是否将错误信息输出到html页面中
 			hash: false, //是否为所有注入的静态资源添加webpack每次编译产生的唯一hash值
-			favicon: "react.ico", //添加特定的 favicon 路径到输出的 HTML 文件中。
+			favicon: 'react.ico', //添加特定的 favicon 路径到输出的 HTML 文件中。
 			minify: {
 				//是否对大小写敏感，默认false
 				caseSensitive: true,
@@ -133,25 +134,25 @@ module.exports = {
 				//删除style的类型属性， type="text/css" 同上
 				removeStyleLinkTypeAttributes: true,
 				//使用短的文档类型，默认false
-				useShortDoctype: true
-			}
-		})
+				useShortDoctype: true,
+			},
+		}),
 	],
 	module: {
 		rules: [
 			{
 				test: /\.html$/,
-				use: "html-loader"
+				use: 'html-loader',
 			},
 			{
 				test: /\.css$/,
 				exclude: /node_modules/,
-				use: [styleLoader, cssLoader, postCssLoader]
+				use: [styleLoader, cssLoader, postCssLoader],
 			},
 			{
 				test: /\.css$/,
 				include: /node_modules/,
-				use: ["style-loader", "css-loader"]
+				use: ['style-loader', 'css-loader'],
 			},
 			{
 				test: /\.scss$/,
@@ -160,37 +161,37 @@ module.exports = {
 					devMode ? styleLoader : MiniCssExtractPlugin.loader,
 					cssLoader,
 					postCssLoader,
-					sassLoader
-				]
+					sassLoader,
+				],
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 				use: [
 					{
-						loader: "url-loader",
+						loader: 'url-loader',
 						options: {
-							name: "[path][name].[ext]",
+							name: '[path][name].[ext]',
 							limit: 1024 * 15,
-							fallback: "file-loader"
-						}
-					}
-				]
+							fallback: 'file-loader',
+						},
+					},
+				],
 			},
 			{
 				test: /\.(js|jsx)$/,
-				use: ["happypack/loader?id=babel"],
-				exclude: /node_modules/ //设置node_modules里的js文件不用解析
+				use: ['happypack/loader?id=babel'],
+				exclude: /node_modules/, //设置node_modules里的js文件不用解析
 			},
 			{
 				test: /\.(js|jsx)$/,
-				loader: "eslint-loader",
-				enforce: "pre",
-				include: [path.resolve(__dirname, "src")], // 指定检查的目录
+				loader: 'eslint-loader',
+				enforce: 'pre',
+				include: [path.resolve(__dirname, 'src')], // 指定检查的目录
 				options: {
 					// 这里的配置项参数将会被传递到 eslint 的 CLIEngine
-					formatter: require("eslint-friendly-formatter") // 指定错误报告的格式规范
-				}
-			}
-		]
-	}
+					formatter: require('eslint-friendly-formatter'), // 指定错误报告的格式规范
+				},
+			},
+		],
+	},
 };
