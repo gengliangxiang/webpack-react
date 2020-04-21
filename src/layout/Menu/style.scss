@@ -1,0 +1,36 @@
+.navRoot {
+	width: 260px;
+	color: #fff;
+}
+.listItem {
+	width: 230px !important;
+	margin-left: 15px !important;
+}
+.listItemSelected {
+	width: 230px !important;
+	margin-left: 15px !important;
+	border-radius: 5px !important;
+	background-color: #9c27b0 !important;
+	box-shadow: rgba(156, 39, 176, 0.4) 0 0 10px 0 !important;
+}
+.listChildrenItem {
+	width: 200px !important;
+	margin-left: 15px !important;
+}
+.listChildrenSelected {
+	width: 200px !important;
+	margin-left: 15px !important;
+	border-radius: 5px !important;
+	background-color: #9c27b0 !important;
+	box-shadow: rgba(156, 39, 176, 0.4) 0 0 10px 0 !important;
+}
+.itemIcon {
+	color: #fff;
+}
+.nested {
+	padding-left: 32px !important;
+}
+// .ListItem {
+// 	background-color: rgba(77, 107, 153);
+// 	box-shadow: rgba(128, 148, 255, 0.5) 0 0 10px 0;
+// }

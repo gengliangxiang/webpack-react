@@ -63,10 +63,11 @@ function LayoutComponent(props) {
 	return (
 		<div className={style.layout}>
 			<div className={style.menu}>
-				<div className={sidebarClass}>
+				<div className={style.sidebar}>
 					<div className={style['menu-header']} />
 					<Menu />
 				</div>
+				<div className={sidebarClass} />
 			</div>
 			<div className={style.layoutRight}>
 				<div className={style.header}>111</div>
