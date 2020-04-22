@@ -64,6 +64,7 @@ export default function NestedList() {
 		<div key={data.link}>
 			<ListItem
 				button
+				// component="div"
 				component={Link}
 				to={data.link}
 				className={
