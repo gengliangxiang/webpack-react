@@ -27,6 +27,7 @@ const instance = axios.create(config);
 instance.interceptors.request.use(
 	requestConfig => {
 		const { data } = requestConfig;
+		console.log(data);
 		requestConfig.data = {
 			data: key.encryptPrivate(JSON.stringify(data), 'base64'),
 		};
