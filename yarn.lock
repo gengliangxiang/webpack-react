@@ -2311,7 +2311,7 @@ asn1.js@^4.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
 
-asn1@~0.2.3:
+asn1@^0.2.4, asn1@~0.2.3:
   version "0.2.4"
   resolved "https://registry.npm.taobao.org/asn1/download/asn1-0.2.4.tgz#8d2475dfab553bb33e77b54e59e880bb8ce23136"
   integrity sha1-jSR136tVO7M+d7VOWeiAu4ziMTY=
@@ -2419,10 +2419,10 @@ axios@0.19.0:
     follow-redirects "1.5.10"
     is-buffer "^2.0.2"
 
-axios@^0.19.1:
-  version "0.19.1"
-  resolved "https://registry.npm.taobao.org/axios/download/axios-0.19.1.tgz#8a6a04eed23dfe72747e1dd43c604b8f1677b5aa"
-  integrity sha1-imoE7tI9/nJ0fh3UPGBLjxZ3tao=
+axios@^0.19.0:
+  version "0.19.2"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
+  integrity sha1-PqNsXYgY0NX4qKl6bTa4bNwAyyc=
   dependencies:
     follow-redirects "1.5.10"
 
@@ -7638,6 +7638,13 @@ node-releases@^1.1.44:
   integrity sha1-zWZDim64dePrAStqEuSNn0Mm/9c=
   dependencies:
     semver "^6.3.0"
+
+node-rsa@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.npm.taobao.org/node-rsa/download/node-rsa-1.0.8.tgz#29a4517380f3272cd2073ff4d4c1ca44127ea4ad"
+  integrity sha1-KaRRc4DzJyzSBz/01MHKRBJ+pK0=
+  dependencies:
+    asn1 "^0.2.4"
 
 node-sass@^4.13.0:
   version "4.13.0"

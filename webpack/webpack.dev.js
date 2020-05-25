@@ -10,7 +10,7 @@ module.exports = merge(common, {
 		hot: true,
 		proxy: {
 			"/api": {
-				target: "http://localhost:8089",
+				target: "http://localhost:8090",
 				// pathRewrite: { "^/api": "/aaa" },
 				changeOrigin: true, // target是域名的话，需要这个参数，
 				secure: false // 设置支持https协议的代理
