@@ -53,16 +53,6 @@
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-es2017": "^7.0.0-beta.53",
     "@babel/preset-react": "^7.7.4",
-    "@nestjs/cli": "^6.13.3",
-    "@nestjs/common": "^6.10.14",
-    "@nestjs/core": "^6.10.14",
-    "@nestjs/platform-express": "^6.10.14",
-    "@nestjs/schematics": "^6.8.2",
-    "@nestjs/testing": "^6.10.14",
-    "@types/express": "^4.17.2",
-    "@types/jest": "^24.0.25",
-    "@types/node": "^13.1.6",
-    "@types/supertest": "^2.0.8",
     "autoprefixer": "^9.7.3",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
@@ -102,13 +92,6 @@
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^4.0.0",
     "stylelint-webpack-plugin": "^1.1.2",
-    "supertest": "^4.0.2",
-    "ts-jest": "^24.3.0",
-    "ts-loader": "^6.2.1",
-    "ts-node": "^8.6.1",
-    "tsconfig-paths": "^3.9.0",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.4",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.5",
@@ -116,22 +99,5 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
     "webpack-merge": "^4.2.2"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".spec.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

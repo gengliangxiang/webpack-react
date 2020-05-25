@@ -3,7 +3,7 @@ import Request from '@http/request';
 
 import style from './style.scss';
 
-class DateComponent extends React.Component {
+class TableComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -13,9 +13,9 @@ class DateComponent extends React.Component {
 	}
 
 	componentDidMount() {
-		Request.post('/mine', {}).then(data => {
+		Request.post('/table', {}).then(data => {
 			this.setState({
-				data: data.data,
+				data: data.responseData,
 			});
 		});
 	}
@@ -50,4 +50,4 @@ class DateComponent extends React.Component {
 		);
 	}
 }
-export default DateComponent;
+export default TableComponent;
