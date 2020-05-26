@@ -7,6 +7,7 @@ import {
 	Query,
 	Get,
 } from '@nestjs/common';
+import * as dayjs from 'dayjs'
 import { AppService } from '../../service/app.service';
 import { IUser, IEncryptionBody, IResponse } from '../../interface/app';
 
@@ -20,10 +21,11 @@ export class LoginController {
 		let responseCode: string = '100';
 		let responseMessage: string = '用户名或密码错误';
 		let responseData: object = {};
+		const now: string = dayjs(new Date()).format('YYYY-MM-DD');
 		if (params.userName === 'admin' && params.password === 'aaaa1111') {
 			responseCode = '200';
 			responseMessage = 'success';
-			responseData = { name: 'admin' };
+			responseData = { userName: now + '管理员' };
 		}
 		const data: IResponse = {
 			responseCode,

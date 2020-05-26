@@ -1,18 +1,36 @@
 import React from 'react';
-
+import { inject, observer } from 'mobx-react';
+import { Icon } from '@material-ui/core';
+import { createHashHistory } from 'history';
 import style from './style.scss';
 
-class Menu extends React.Component {
-	render() {
-		return (
-			<div>
-				<ul className={style.listbox}>
-					<li>用户1</li>
-					<li>用户2</li>
-					<li>用户3</li>
-				</ul>
+function Header(props) {
+	const { userStore } = props;
+	const [open, setOpen] = React.useState(false);
+	const { userName } = userStore;
+	const show = flag => {
+		const status = flag || open;
+		setOpen(!status);
+	};
+	const logout = () => {
+		userStore.logout();
+		createHashHistory().push('/login');
+	};
+	return (
+		<div className={style.header} onMouseLeave={() => show(true)}>
+			<div className={style.userBox}>
+				<div onClick={() => show()}>
+					用户：
+					{userName}
+					<Icon className={style.userIcon}>arrow_drop_down</Icon>
+				</div>
+				{open && (
+					<div className={style.logoutBox} onClick={() => logout()}>
+						退出登录
+					</div>
+				)}
 			</div>
-		);
-	}
+		</div>
+	);
 }
-export default Menu;
+export default inject('userStore')(observer(Header));

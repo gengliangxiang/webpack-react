@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Menu from '@layout/Menu/index';
+import Header from '@layout/Header/index';
 import MyDialog from '@components/business/Dialog/index';
 
 import style from './style.scss';
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
 	},
 	setting: {
 		position: 'fixed',
-		top: '40px',
+		top: '120px',
 		right: 0,
 		zIndex: 99,
 		width: '60px',
@@ -73,7 +74,7 @@ function LayoutComponent(props) {
 				<div className={sidebarClass} />
 			</div>
 			<div className={style.layoutRight}>
-				<div className={style.header}>111</div>
+				<Header />
 				<div className={style.content}>
 					{renderRoutes(route.routes, isLogin, authPath)}
 				</div>

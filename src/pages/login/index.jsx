@@ -24,10 +24,9 @@ function LoginComponent(props) {
 	};
 	const { userStore } = props;
 	const login = () => {
-		console.log(loginParams);
 		Request.post('/login/login', loginParams).then(data => {
 			if (data.responseCode === '200') {
-				userStore.changeLogin(true);
+				userStore.login(data.responseData.userName);
 				history.push('/home');
 			}
 		});

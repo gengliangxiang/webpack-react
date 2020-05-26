@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^6.7.2",
     "@types/mockjs": "^1.0.2",
     "cors": "^2.8.5",
+    "dayjs": "^1.8.27",
     "http-proxy-middleware": "^0.20.0",
     "mockjs": "^1.1.0",
     "node-rsa": "^1.0.8",
