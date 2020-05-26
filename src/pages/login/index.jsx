@@ -1,5 +1,6 @@
 import React from 'react';
 import { createHashHistory } from 'history';
+import { inject, observer } from 'mobx-react';
 import loginBg from '@images/login.jpg';
 import { Button, Box, TextField } from '@material-ui/core';
 
@@ -16,15 +17,17 @@ const backgroundStyle = {
 };
 const history = createHashHistory();
 
-function LoginComponent() {
+function LoginComponent(props) {
 	const loginParams = {
 		userName: '',
 		password: '',
 	};
+	const { userStore } = props;
 	const login = () => {
 		console.log(loginParams);
 		Request.post('/login/login', loginParams).then(data => {
 			if (data.responseCode === '200') {
+				userStore.changeLogin(true);
 				history.push('/home');
 			}
 		});
@@ -68,4 +71,4 @@ function LoginComponent() {
 		</div>
 	);
 }
-export default LoginComponent;
+export default inject('userStore')(observer(LoginComponent));

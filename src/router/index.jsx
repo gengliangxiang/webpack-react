@@ -1,15 +1,18 @@
 import React from 'react';
 import { HashRouter } from 'react-router-dom';
-import { renderRoutes } from 'react-router-config';
+import { inject, observer } from 'mobx-react';
+// import { renderRoutes } from 'react-router-config';
+import renderRoutes from '@router/renderRoutes';
 import Route from './config';
 
-class Router extends React.Component {
-	render() {
-		return (
-			<HashRouter>
-				{renderRoutes(Route)}
-			</HashRouter>
-		);
-	}
+const authPath = '/login';
+function Router(props) {
+	const { userStore } = props;
+	const { isLogin } = userStore;
+	return (
+		<HashRouter>
+			{renderRoutes(Route, isLogin, authPath)}
+		</HashRouter>
+	);
 }
-export default Router;
+export default inject('userStore')(observer(Router));

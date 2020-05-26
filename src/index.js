@@ -7,7 +7,6 @@ import stores from '@store/index';
 import '@style/reset.scss';
 
 ReactDom.render(
-	// eslint-disable-next-line react/jsx-props-no-spreading
 	<Provider {...stores}>
 		<Router />
 	</Provider>,

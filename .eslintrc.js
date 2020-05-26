@@ -40,6 +40,7 @@ module.exports = {
 
 		'react/prop-types': 0,
 		'react/jsx-filename-extension': 0,
+		'react/jsx-props-no-spreading': 0,
 		'react/prefer-stateless-function': 0,
 		'react/jsx-indent': [2, 'tab'],
 		'react/jsx-indent-props': [2, 'tab'],

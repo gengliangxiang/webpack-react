@@ -1,5 +1,6 @@
 import React from 'react';
-import { renderRoutes } from 'react-router-config';
+// import { renderRoutes } from 'react-router-config';
+import renderRoutes from '@router/renderRoutes';
 import classnames from 'classnames';
 import { inject, observer } from 'mobx-react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,9 +43,11 @@ const useStyles = makeStyles({
 
 function LayoutComponent(props) {
 	const classes = useStyles();
-	const { route, menuStore } = props;
+	const { route, menuStore, userStore } = props;
 	const [open, setOpen] = React.useState(false);
 	const { bg } = menuStore;
+	const authPath = '/login';
+	const { isLogin } = userStore;
 	const sidebarClass = classnames(
 		style['menu-fixed'],
 		style[`sidebar-${bg}`],
@@ -72,7 +75,7 @@ function LayoutComponent(props) {
 			<div className={style.layoutRight}>
 				<div className={style.header}>111</div>
 				<div className={style.content}>
-					{renderRoutes(route.routes)}
+					{renderRoutes(route.routes, isLogin, authPath)}
 				</div>
 			</div>
 			<Card className={classes.setting} onClick={openDialog}>
@@ -87,4 +90,4 @@ function LayoutComponent(props) {
 	);
 }
 
-export default inject('menuStore')(observer(LayoutComponent));
+export default inject('menuStore', 'userStore')(observer(LayoutComponent));

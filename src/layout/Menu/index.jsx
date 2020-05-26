@@ -13,11 +13,11 @@ import style from './style.scss';
 const expandLess = <Icon>expand_less</Icon>;
 const expandMore = <Icon>expand_more</Icon>;
 const muneData = [
-	{
-		primary: 'login',
-		link: '/login',
-		icon: 'account_circle',
-	},
+	// {
+	// 	primary: 'login',
+	// 	link: '/login',
+	// 	icon: 'account_circle',
+	// },
 	{
 		primary: 'home',
 		link: '/home',
