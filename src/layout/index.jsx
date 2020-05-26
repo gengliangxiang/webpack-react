@@ -48,7 +48,7 @@ function LayoutComponent(props) {
 	const [open, setOpen] = React.useState(false);
 	const { bg } = menuStore;
 	const authPath = '/login';
-	const { isLogin } = userStore;
+	const { isLogin } = userStore.userInfo;
 	const sidebarClass = classnames(
 		style['menu-fixed'],
 		style[`sidebar-${bg}`],

@@ -26,7 +26,7 @@ function LoginComponent(props) {
 	const login = () => {
 		Request.post('/login/login', loginParams).then(data => {
 			if (data.responseCode === '200') {
-				userStore.login(data.responseData.userName);
+				userStore.login(data.responseData);
 				history.push('/home');
 			}
 		});

@@ -6,6 +6,8 @@ const menuStore = new MenuStore();
 const homeStore = new HomeStore();
 const userStore = new UserStore();
 
+
+userStore.userInfo = localStorage.userInfo ? JSON.parse(localStorage.userInfo) : {};
 const stores = {
 	menuStore,
 	homeStore,

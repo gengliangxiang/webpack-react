@@ -7,7 +7,7 @@ import style from './style.scss';
 function Header(props) {
 	const { userStore } = props;
 	const [open, setOpen] = React.useState(false);
-	const { userName } = userStore;
+	const { userName } = userStore.userInfo;
 	const show = flag => {
 		const status = flag || open;
 		setOpen(!status);

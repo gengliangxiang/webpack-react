@@ -8,7 +8,7 @@ import Route from './config';
 const authPath = '/login';
 function Router(props) {
 	const { userStore } = props;
-	const { isLogin } = userStore;
+	const { isLogin } = userStore.userInfo;
 	return (
 		<HashRouter>
 			{renderRoutes(Route, isLogin, authPath)}

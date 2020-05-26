@@ -1,22 +1,16 @@
 import { observable, action } from 'mobx';
 
 class UserStore {
-	@observable isLogin = JSON.parse(localStorage.reactLogin) || false;
-
-	@observable userName = JSON.parse(localStorage.userName) || '管理员';
+	@observable userInfo = {}
 
 	@action login(user) {
-		this.isLogin = true;
-		this.userName = user;
-		localStorage.reactLogin = JSON.stringify(true);
-		localStorage.userName = JSON.stringify(user);
+		this.userInfo = {isLogin: true, ...user};
+		localStorage.userInfo = JSON.stringify(this.userInfo);
 	}
 
 	@action logout() {
-		this.isLogin = false;
-		this.userName = null;
-		localStorage.removeItem('reactLogin');
-		localStorage.removeItem('userName');
+		this.userInfo = {};
+		localStorage.removeItem('userInfo');
 	}
 }
 export default UserStore;
