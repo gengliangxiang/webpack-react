@@ -6,8 +6,6 @@
 当前 node.js 版本 ：v12.13.1
 当前 npm 版本 ： 6.12.1
 
-> 2020/1/6 更新 自己重新按照文档走一遍发现有点遗漏，进行补充
-
 > 本文从零开始搭建 webpack ，只需要按照步骤一步一步走，最后就可搭建成功 ，请放心食用，无毒
 
 [完整源码](https://github.com/gengliangxiang/webpack-react)
@@ -19,6 +17,7 @@
 ```
 mkdir webpack4-react && cd webpack4-react
 npm init -y
+// yarn init
 ```
 
 ### 2.安装 webpack & webpack 的 cli
@@ -27,13 +26,13 @@ npm init -y
 当前 webpack-cli 版本：3.3.10
 
 ```
-npm install --save-dev webpack webpack-cli
+npm install --save-dev webpack@4.41.5 webpack-cli@3.3.10
 ```
 
 或
 
 ```
-yarn add webpack webpack-cli --dev
+yarn add -D webpack@4.41.5 webpack-cli@3.3.10
 ```
 
 > 调整 package.json 文件，以便确保我们安装包是私有的(private)，并且移除 main 入口。这可以防止意外发布你的代码。
@@ -54,12 +53,6 @@ package.json
 ```
 
 ### 3.下载 lodash 依赖
-
-```
-npm install --save lodash
-```
-
-或
 
 ```
 yarn add lodash
@@ -223,7 +216,7 @@ package.json
 ### 3.执行脚本命令打包
 
 ```
-npm run build
+yarn build
 ```
 
 终端将输出：
@@ -250,11 +243,11 @@ Entrypoint main = main.js
 
 ### 1. 下载 react 和 react-dom
 
-`npm install --save-dev react react-dom`
+`yarn add react@16.12.0 react-dom@16.12.0`
 
 ### 2. 下载 babel(编译 js、jsx，es6 等)
 
-`npm install --save-dev @babel/cli @babel/core @babel/preset-react @babel/preset-env @babel/plugin-transform-runtime babel-loader`
+`yarn add -D @babel/cli@7.7.7 @babel/core@7.7.7 @babel/preset-react@7.7.4 @babel/preset-env@7.7.7 @babel/plugin-transform-runtime@7.7.6 babel-loader@8.0.6`
 
 ### 3. 修改 入口文件
 
@@ -388,7 +381,7 @@ dist/index.html
 
 ### 6. 打包
 
-    执行 npm run build
+    执行 yarn build
     终端输出：
     ```
     $ webpack
@@ -437,7 +430,7 @@ src/index.html
 
 - 1. 下载依赖
   ```
-  npm install --save-dev webpack-dev-server
+  yarn add -D webpack-dev-server@3.10.1
   ```
 - 2. webpack 配置文件中配置 webpack-dev-server
      webpack.config.js
@@ -462,7 +455,7 @@ src/index.html
 
 - 1. 下载依赖
   ```
-  npm install --save-dev html-webpack-plugin
+  yarn add -D html-webpack-plugin@3.2.0
   ```
 - 2. webpack 配置文件中配置 webpack-dev-server
      webpack.config.js
@@ -522,13 +515,13 @@ package.json
 }
 ```
 
-### 4.执行脚本命令 `npm run dev`
+### 4.执行脚本命令 `yarn dev`
 
-> 执行 `npm run dev` 后会自动打开浏览器，此时修改 index.js 文件中内容，浏览器会实时更新
+> 执行 `yarn dev` 后会自动打开浏览器，此时修改 index.js 文件中内容，浏览器会实时更新
 
 删除 dist 文件夹
 
-> 执行 npm run build 打包依旧会在 dist 下生成打包文件
+> 执行 yarn build 打包依旧会在 dist 下生成打包文件
 
 ## 五、资源管理
 
@@ -538,7 +531,7 @@ package.json
 
 - 1. 下载 style-loader css-loader
   ```
-  npm install --save-dev style-loader css-loader
+  yarn add -D style-loader@1.1.2 css-loader@3.4.1
   ```
 - 2. webpack.config.js 中配置 css 的 loader
   ```
@@ -570,14 +563,14 @@ package.json
   ```
   import './style/reset.css';
   ```
-  执行 `npm run dev` ,会看到 reset.css 中的样式已经生效
+  执行 `yarn dev` ,会看到 reset.css 中的样式已经生效
 
 ### 2. CSS 预处理器 & 模块化 & 兼容性处理
 
 - 1. 下载依赖
   ```
-  npm install --save-dev autoprefixer postcss-loader
-  npm install --save-dev less-loader node-sass sass sass-loader
+  yarn add -D autoprefixer@9.7.3 postcss-loader@3.0.0
+  yarn add -D less-loader@5.0.0 node-sass@4.13.0 sass@1.24.2 sass-loader@8.0.0
   ```
   > 这个过程中安装 node-sass 可能会很慢, 耐心等待
 - 2. 创建 React 组件
@@ -761,19 +754,19 @@ package.json
   };
   ```
 
-> 这时候执行 `npm run dev` 命令会报错，因为缺少一些 babel 依赖，下载一下就好了
+> 这时候执行 `yarn dev` 命令会报错，因为缺少一些 babel 依赖，下载一下就好了
 
 ```
-npm install --save @babel/runtime core-js
+yarn add @babel/runtime@7.7.7 core-js@3.6.1
 ```
 
-执行 `npm run dev` ,自动打开浏览器，css 相关的配置构建完成
+执行 `yarn dev` ,自动打开浏览器，css 相关的配置构建完成
 
 ### 3. 图片处理
 
 - 1. 下载依赖
   ```
-  npm install --save-dev file-loader url-loader
+  yarn add -D file-loader@5.0.2 url-loader@3.0.0
   ```
 - 2. webpack 配置中添加规则
   ```
@@ -882,7 +875,7 @@ ReactDom.render(
 
 ```
 
-此时 执行 `npm run dev` 查看
+此时 执行 `yarn dev` 查看
 
 ## 七、 环境配置构建
 
@@ -892,7 +885,7 @@ ReactDom.render(
 
 - 1. 下载依赖
   ```
-  npm install --save-dev webpack-merge clean-webpack-plugin uglifyjs-webpack-plugin
+  yarn add -D webpack-merge@4.2.2 clean-webpack-plugin@3.0.0 uglifyjs-webpack-plugin@2.2.0
   ```
 - 2. 拆分 webpack 配置
 
@@ -1048,7 +1041,7 @@ ReactDom.render(
 - 4. 设置环境变量
      下载依赖
   ```
-  npm install --save-dev cross-env
+  yarn add -D cross-env@6.0.3
   ```
   npm 脚本命令更改
   ```
@@ -1066,7 +1059,7 @@ ReactDom.render(
 
 - 1. 下载依赖
   ```
-  npm install --save-dev html-loader
+  yarn add -D html-loader@0.5.5
   ```
 - 2. 配置
 
@@ -1145,7 +1138,7 @@ ReactDom.render(
 
 - 1. 下载依赖
   ```
-  npm install --save-dev mini-css-extract-plugin
+  yarn add -D mini-css-extract-plugin@0.9.0
   ```
 - 2. 在生产环境中压缩 CSS, 开发环境中不压缩 scss
 
@@ -1194,13 +1187,13 @@ ReactDom.render(
     }
   ```
 
-- 3. 再次执行 `npm run build` 会发现在 dist 文件夹里多了些 css，css.map 文件
+- 3. 再次执行 `yarn build` 会发现在 dist 文件夹里多了些 css，css.map 文件
 
 ### 4. 生产环境压缩 JS, 打包时清除 dist 文件夹
 
 - 1. 下载依赖
   ```
-  npm install --save-dev uglifyjs-webpack-plugin clean-webpack-plugin
+  yarn add -D uglifyjs-webpack-plugin@2.2.0 clean-webpack-plugin@3.0.0
   ```
 - 2. webpack 配置
 
@@ -1229,7 +1222,7 @@ ReactDom.render(
 
 - 1. 下载依赖
   ```
-  npm install --save-dev happypack
+  yarn add -D happypack@5.0.1
   ```
 - 2. 配置
 
@@ -1271,7 +1264,7 @@ ReactDom.render(
 
 - 1. 下载依赖
   ```
-  npm install --save-dev @babel/polyfill @babel/plugin-transform-arrow-functions @babel/preset-es2017
+  yarn add -D @babel/polyfill@7.7.0 @babel/plugin-transform-arrow-functions@7.7.4 @babel/preset-es2017@7.0.0-beta.53
   ```
 - 2. 配置
 
@@ -1340,7 +1333,7 @@ ReactDom.render(
   // console.log('static class>>>>>', new A());
   ```
 
-  打包 `npm run build` , 把 dist 文件的 index.html 用 IE 打开验证
+  打包 `yarn build` , 把 dist 文件的 index.html 用 IE 打开验证
 
 ## 九、 代码规范- eslint & stylelint
 
@@ -1392,7 +1385,7 @@ setting.json
 
 - 1. 下载依赖
   ```
-  npm i babel-eslint eslint eslint-config-airbnb eslint-config-react-app eslint-friendly-formatter eslint-loader eslint-plugin-flowtype eslint-plugin-html eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react autoprefixer -D
+  yarn add -D babel-eslint@10.0.3 eslint@6.8.0 eslint-config-airbnb@18.0.1 eslint-config-react-app@5.1.0 eslint-friendly-formatter@4.0.1 eslint-loader@3.0.3 eslint-plugin-flowtype@4.5.3 eslint-plugin-html@6.0.0 eslint-plugin-import@2.19.1s eslint-plugin-jsx-a11y@6.2.3 eslint-plugin-react@7.17.0 autoprefixer@9.7.3
   ```
 - 2. webpack 的 eslint 配置
 
@@ -1622,7 +1615,7 @@ setting.json
 
 - 1. 下载依赖
   ```
-  npm i stylelint stylelint-config-recommended stylelint-config-standard stylelint-order stylelint-webpack-plugin -D
+  yarn add -D stylelint@12.0.1 stylelint-config-recommended@3.0.0 stylelint-config-standard@19.0.0 stylelint-order@4.0.0 stylelint-webpack-plugin@1.1.2
   ```
 - 2. stylelint 配置
 
@@ -1976,7 +1969,7 @@ setting.json
 下载依赖：
 
 ```
-npm install webpack-bundle-analyzer --save-dev
+yarn add -D webpack-bundle-analyzer@3.6.0
 ```
 
 - 1. 新建配置文件
@@ -2034,4 +2027,4 @@ npm install webpack-bundle-analyzer --save-dev
   },
   ```
 
-执行 `npm run dll` 会在 tools 文件夹下生成对应的 dll 文件： `vendors-manifest.json` 和 `vendors.dll.js`,同时会自动打开浏览器查看到对应文件大小
+执行 `yarn dll` 会在 tools 文件夹下生成对应的 dll 文件： `vendors-manifest.json` 和 `vendors.dll.js`,同时会自动打开浏览器查看到对应文件大小
