@@ -4,8 +4,8 @@ import Request from '@http/request';
 import style from './style.scss';
 
 class TableComponent extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 		this.state = {
 			thData: ['姓名', '邮箱', '手机', '地址', '说明', '时间'],
 			data: [],
