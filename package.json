@@ -31,7 +31,7 @@
     "core-js": "^3.6.1",
     "dayjs": "^1.8.27",
     "history": "^4.10.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "material-table": "1.68",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.8",
